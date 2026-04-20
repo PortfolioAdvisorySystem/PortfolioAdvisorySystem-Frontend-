@@ -1,0 +1,137 @@
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <app-sidebar></app-sidebar>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- NAVBAR -->
+    <app-navbar></app-navbar>
+
+    <!-- TITLE -->
+    <div class="title">
+      <h1>Your Portfolio</h1>
+      <p>Monitor your stock allocations and performance</p>
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+      <div class="card highlight">
+        <div class="card-content">
+          <p>Portfolio Value</p>
+          <h2>${{ portfolio.portfolioValue.toLocaleString() }}</h2>
+          <span>↗ {{ portfolio.gainPercentage }}% increase</span>
+        </div>
+        <div class="icon-box icon-green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card highlight">
+        <div class="card-content">
+          <p>Total Gain</p>
+          <h2>${{ portfolio.totalGain.toLocaleString() }}</h2>
+          <span>↗ {{ portfolio.gainPercentage }}% increase</span>
+        </div>
+        <div class="icon-box icon-green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3v18h18M7 16l4-5 4 4 6-7"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <p>Allocated Stocks</p>
+          <h2>{{ portfolio.allocatedStocks }} Stocks</h2>
+          <span>↗ 1% increase</span>
+        </div>
+        <div class="icon-box icon-cyan">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3v18h18M7 16l4-5 4 4 6-7"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-content">
+          <p>Avg Annual Return</p>
+          <h2>{{ portfolio.avgAnnualReturn }}%</h2>
+          <span>↗ 2.3% increase</span>
+        </div>
+        <div class="icon-box icon-green">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="19" x2="12" y2="5"/>
+            <polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CHART SECTION -->
+    <div class="charts">
+
+      <!-- LINE CHART -->
+      <div class="chart-box">
+        <h3>Portfolio Growth</h3>
+        <canvas #lineChart></canvas>
+      </div>
+
+      <!-- PIE CHART -->
+      <div class="chart-box small">
+        <h3>Allocation Breakdown</h3>
+        <canvas #pieChart></canvas>
+
+        <div class="legend">
+          <div><span class="dot green"></span> Tech Stocks <b>35%</b></div>
+          <div><span class="dot blue"></span> Finance <b>25%</b></div>
+          <div><span class="dot lightblue"></span> Healthcare <b>20%</b></div>
+          <div><span class="dot orange"></span> Energy <b>20%</b></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+
+      <div class="table-header">
+        <h3>Your Allocations</h3>
+        <button>View All</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Stock</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>Value</th>
+            <th>Allocation</th>
+            <th>Change</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let stock of portfolio.allocations">
+            <td>{{ stock.symbol }}</td>
+            <td>{{ stock.shares }}</td>
+            <td>${{ stock.price }}</td>
+            <td>${{ stock.value.toLocaleString() }}</td>
+            <td>{{ stock.allocation }}%</td>
+            <td class="green-text">+{{ stock.change }}%</td>
+            <td>{{ stock.date }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+  </div>
+</div>

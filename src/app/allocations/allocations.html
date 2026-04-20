@@ -1,0 +1,98 @@
+<div class="layout">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="main">
+
+    <!-- NAVBAR -->
+    <app-navbar></app-navbar>
+
+    <!-- TITLE -->
+    <div class="title-row">
+      <div>
+        <h1>My Allocations</h1>
+        <p>Manage and monitor your stock allocations</p>
+      </div>
+      <button class="add-btn">+ Add Allocation</button>
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+      <div class="card">
+        <p>Total Allocated</p>
+        <h2>$12,277.7</h2>
+        <span class="green">↗ +12.5% this month</span>
+      </div>
+
+      <div class="card">
+        <p>Active Positions</p>
+        <h2>4</h2>
+        <span>5 total allocations</span>
+      </div>
+
+      <div class="card">
+        <p>Best Performer</p>
+        <h2>JNJ</h2>
+        <span class="green">↗ +3.2%</span>
+      </div>
+
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+      <input 
+        placeholder="Search by symbol or company name..." 
+        [(ngModel)]="searchQuery"
+      />
+      <div class="filters">
+        <button 
+          [class.active]="filterStatus === 'All'"
+          (click)="setFilter('All')"
+        >All</button>
+        <button 
+          [class.active]="filterStatus === 'Active'"
+          (click)="setFilter('Active')"
+        >Active</button>
+        <button 
+          [class.active]="filterStatus === 'Pending'"
+          (click)="setFilter('Pending')"
+        >Pending</button>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-box">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Company</th>
+            <th>Sector</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>Value</th>
+            <th>Change</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let allocation of filteredAllocations">
+            <td class="green">{{ allocation.symbol }}</td>
+            <td>{{ allocation.company }}</td>
+            <td>{{ allocation.sector }}</td>
+            <td>{{ allocation.shares }}</td>
+            <td>${{ allocation.price }}</td>
+            <td>${{ allocation.value }}</td>
+            <td [class.green]="allocation.change > 0" [class.red]="allocation.change < 0">{{ allocation.change > 0 ? '+' : '' }}{{ allocation.change }}%</td>
+            <td><span [class.badge]="true" [class.active]="allocation.status === 'Active'" [class.pending]="allocation.status === 'Pending'">{{ allocation.status }}</span></td>
+            <td>✏️ 🗑️</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
