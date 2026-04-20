@@ -1,0 +1,46 @@
+<div class="loading-container">
+  <div class="animation-wrapper">
+    <div class="pulse-container">
+      <div class="pulse"></div>
+      <div class="outer-ring ring-1"></div>
+      <div class="outer-ring ring-2"></div>
+      <div class="outer-ring ring-3"></div>
+    </div>
+    
+    <div class="progress-ring">
+      <svg class="progress-circle" width="200" height="200">
+        <circle 
+          cx="100" 
+          cy="100" 
+          r="85" 
+          fill="none" 
+          stroke="#333" 
+          stroke-width="2"
+        />
+        <circle 
+          cx="100" 
+          cy="100" 
+          r="85" 
+          fill="none" 
+          stroke="#00ffc3" 
+          stroke-width="2" 
+          stroke-linecap="round"
+          [style.stroke-dasharray]="534.07"
+          [style.stroke-dashoffset]="534.07 - (534.07 * progress / 100)"
+          class="progress-stroke"
+        />
+      </svg>
+    </div>
+  </div>
+  
+  <div class="message-container">
+    <p class="analysis-message">{{ currentMessage }}</p>
+
+  </div>
+  
+  <div class="dots-animation">
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+  </div>
+</div>
