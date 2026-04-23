@@ -117,3 +117,23 @@ td, th {
   background: rgba(59,130,246,0.2);
   color: #3b82f6;
 }
+.inflow-form {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.inflow-form input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.inflow-form button {
+  padding: 8px 12px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
