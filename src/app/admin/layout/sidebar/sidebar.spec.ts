@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingComponent } from './landing';
+import { Sidebar } from './sidebar';
 
-describe('CLandingComponent', () => {
-  let component: LandingComponent;
-  let fixture: ComponentFixture<LandingComponent>;
+describe('Sidebar', () => {
+  let component: Sidebar;
+  let fixture: ComponentFixture<Sidebar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LandingComponent],
+      imports: [Sidebar],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LandingComponent);
+    fixture = TestBed.createComponent(Sidebar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
