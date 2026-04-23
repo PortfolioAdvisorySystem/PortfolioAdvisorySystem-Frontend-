@@ -1,0 +1,263 @@
+<div class="dashboard">
+
+    <!-- HEADER -->
+    <div class="top-bar">
+        <div class="title-section">
+            <p class="module">// MODULE</p>
+
+            <!-- FIXED TAG -->
+            <h1>Dashboard</h1>
+
+            <p class="subtitle">
+                Real-time snapshot of allocation health, rule breaches, and pending operational actions.
+            </p>
+        </div>
+
+        <div class="actions">
+            <button class="btn-outline">Export</button>
+            <button class="btn-primary">Simulate rebalance</button>
+        </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stats">
+
+        <div class="card stat-card">
+
+            <div class="card-header">
+                <p class="label">TOTAL SUBSCRIBERS</p>
+
+                <!-- ICON -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 3a4 4 0 1 0 0 8a4 4 0 1 0 0-8" stroke="#2B6CB0" />
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke="#63B3ED" />
+                    <path d="M16 3.128a4 4 0 0 1 0 7.744 M22 21v-2a4 4 0 0 0-3-3.87" stroke="#2B6CB0" />
+                </svg>
+            </div>
+
+            <div class="card-body">
+                <h2 class="value">1,284</h2>
+                <span class="change">↗ +24 this wk</span>
+            </div>
+
+        </div>
+
+
+        <div class="card stat-card highlight-yellow">
+
+            <div class="card-header">
+                <p class="label">ACTIVE RULES</p>
+
+                <!-- Scale icon (exact style) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 3v18M7 21h10" />
+                    <path d="M7 7h10" />
+                    <path d="M7 7v1l3 8H4l3-8zM17 7v1l-3 8H20l-3-8z" />
+                </svg>
+            </div>
+
+            <h2 class="value yellow">4</h2>
+
+        </div>
+
+
+        <!-- ELIGIBLE STOCKS -->
+        <div class="card stat-card">
+
+            <div class="card-header">
+                <p class="label">ELIGIBLE STOCKS</p>
+
+                <!-- Chart icon -->
+                <svg class="icon green" viewBox="0 0 24 24" fill="none" stroke-width="1.8">
+                    <path d="M3 3v18h18"></path>
+                    <path d="M7 14l3-3 3 2 4-5"></path>
+                </svg>
+            </div>
+
+            <div class="card-body">
+                <h2 class="value green">8</h2>
+                <span class="change red">↘ -2</span>
+            </div>
+
+        </div>
+
+        <!-- PENDING APPROVALS -->
+        <div class="card stat-card">
+
+            <div class="card-header">
+                <p class="label">PENDING APPROVALS</p>
+
+                <!-- workflow / nodes icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 4 H13 L15 6 V18 H6 Z M8 9 H12 M8 13 H12" />
+                    <path
+                        d="M20.5 16.5 A3 3 0 1 0 14.5 16.5 A3 3 0 1 0 20.5 16.5 M17.5 16.5 L17.5 14 M17.5 16.5 L19.2 16.5" />
+                </svg>
+            </div>
+
+            <h2 class="value red">3</h2>
+
+        </div>
+
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts">
+
+        <!-- BAR CHART -->
+        <div class="card large">
+            <div class="card-header">
+                <h3>Allocation by strategy</h3>
+                <span class="unit">USD • millions</span>
+            </div>
+
+            <div class="chart-container">
+                <div class="y-axis">
+                    <span>80</span>
+                    <span>60</span>
+                    <span>40</span>
+                    <span>20</span>
+                    <span>0</span>
+                </div>
+
+                <div class="bars-wrapper">
+                    <div class="grid-lines">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+
+                    <div class="bars">
+                        <div class="bar-group">
+                            <div class="bar yellow" style="height: 45%">
+                                <div class="tooltip">Conservative: 42</div>
+                            </div>
+                            <span>Conservative</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar green" style="height: 85%">
+                                <div class="tooltip">Moderate: 82</div>
+                            </div>
+                            <span>Moderate</span>
+                        </div>
+                        <div class="bar-group">
+                            <div class="bar blue" style="height: 60%">
+                                <div class="tooltip">Aggressive: 60</div>
+                            </div>
+                            <span>Aggressive</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DONUT -->
+        <div class="card">
+            <h3>Rule breach summary</h3>
+
+            <div class="donut-wrapper">
+                <div class="donut">
+                </div>
+            </div>
+
+            <div class="legend">
+                <span><i class="c-red"></i>Blacklist</span>
+                <span><i class="c-green"></i>Concentration</span>
+                <span><i class="c-blue"></i>Liquidity</span>
+                <span><i class="c-purple"></i>Risk limit</span>
+                <span><i class="c-yellow"></i>Sector cap</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- TABLES -->
+    <div class="tables">
+
+        <!-- REBALANCE TABLE -->
+        <div class="card">
+            <h3>Recent rebalance events</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>RUN ID</th>
+                        <th>TRIGGERED</th>
+                        <th>SUBS</th>
+                        <th>WHEN</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="link">run_834</td>
+                        <td>system</td>
+                        <td>80</td>
+                        <td>just now</td>
+                        <td><span class="badge running">RUNNING</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="link">run_833</td>
+                        <td>alice</td>
+                        <td>117</td>
+                        <td>7h ago</td>
+                        <td><span class="badge success">COMPLETED</span></td>
+                    </tr>
+
+                    <tr>
+                        <td class="link">run_82f</td>
+                        <td>alice</td>
+                        <td>265</td>
+                        <td>1d ago</td>
+                        <td><span class="badge failed">FAILED</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- DEALLOCATION TABLE -->
+        <div class="card">
+            <div class="card-header">
+                <div>
+                    <h3>Deallocation queue</h3>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>SYMBOL</th>
+                        <th>REASON</th>
+                        <th>AMOUNT</th>
+                        <th>QUEUED</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="link">XOM</td>
+                        <td>Suspended</td>
+                        <td>$1,240,000</td>
+                        <td>just now</td>
+                    </tr>
+
+                    <tr>
+                        <td class="link">BA</td>
+                        <td>Blacklisted</td>
+                        <td>$870,000</td>
+                        <td>just now</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
