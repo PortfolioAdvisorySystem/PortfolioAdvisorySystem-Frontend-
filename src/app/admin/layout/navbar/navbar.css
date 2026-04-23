@@ -1,0 +1,145 @@
+/* NAVBAR CONTAINER */
+.navbar {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 20px;
+
+  background: #0b0f14;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* LEFT */
+.collapse-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* SEARCH */
+.nav-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-box {
+  width: 520px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #111827;
+  border: 1px solid #1f2937;
+  border-radius: 10px;
+
+  padding: 0 12px;
+}
+
+.search-icon {
+  color: #6b7280;
+}
+
+.search-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.shortcut {
+  font-size: 12px;
+  color: #6b7280;
+  border: 1px solid #374151;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+/* RIGHT */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* LIVE BADGE */
+.live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 12px;
+  color: #9ca3af;
+
+  padding: 6px 10px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+
+/* BELL */
+.bell {
+  position: relative;
+  font-size: 18px;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+.notif {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+
+  background: #f59e0b;
+  color: black;
+
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 999px;
+}
+
+/* USER */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 6px 10px;
+  border: 1px solid #1f2937;
+  border-radius: 8px;
+
+  font-size: 13px;
+}
+
+.avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f59e0b;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: black;
+}

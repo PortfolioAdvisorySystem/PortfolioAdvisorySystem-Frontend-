@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [RouterModule],   // ✅ IMPORTANT
+  imports: [RouterModule],   
   templateUrl: './landing.html',
   styleUrls: ['./landing.css']
 })
