@@ -14,6 +14,7 @@ export class Rules {
 
   searchTerm: string = '';
   selectedStatus: string = 'ALL';
+  formError: string = '';
 
   rules: Rule[] = [];
   filteredRules: Rule[] = [];
@@ -63,6 +64,7 @@ export class Rules {
 
   openModal() {
     this.isModalOpen = true;
+    this.formError = '';
   }
 
   closeModal() {
@@ -84,7 +86,20 @@ export class Rules {
 
   addRule() {
 
-    if (!this.newRule.name) return;
+    // VALIDATION CHECK
+    if (
+      !this.newRule.name ||
+      !this.newRule.type ||
+      !this.newRule.threshold ||
+      !this.newRule.priority ||
+      !this.newRule.effective
+    ) {
+      this.formError = 'All fields are required';
+      return;
+    }
+
+    //  CLEAR ERROR
+    this.formError = '';
 
     const newId = 'R-' + (1000 + this.rules.length + 1);
 

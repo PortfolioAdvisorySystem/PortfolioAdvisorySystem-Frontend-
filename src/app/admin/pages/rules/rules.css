@@ -223,3 +223,9 @@ input, select {
   border-radius: 6px;
   cursor: pointer;
 }
+
+.error-text {
+  color: #ef4444;       
+  font-size: 12px;
+  margin-bottom: 8px;
+}

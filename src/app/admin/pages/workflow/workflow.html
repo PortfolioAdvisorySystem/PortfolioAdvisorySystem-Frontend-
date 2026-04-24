@@ -1,1 +1,134 @@
-<p>workflow works!</p>
+<div class="workflow-container">
+
+    <!-- HEADER -->
+    <div class="header-row">
+        <div>
+            <h2>Approval Workflow</h2>
+            <p>Review queued commands. Two-person integrity is enforced — makers cannot approve their own submissions.
+            </p>
+        </div>
+
+
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filters">
+
+        <div class="tabs">
+            <button [class.active]="activeTab==='PENDING'" (click)="activeTab='PENDING'">
+                Pending
+            </button>
+            <button [class.active]="activeTab==='ALL'" (click)="activeTab='ALL'">
+                All
+            </button>
+        </div>
+
+        <div class="count">5 COMMANDS</div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table">
+
+        <div class="table-header">
+            <span>COMMAND ID</span>
+            <span>ACTION</span>
+            <span>SUBMITTED BY</span>
+            <span>WHEN</span>
+            <span>STATUS</span>
+            <span>REVIEW</span>
+        </div>
+
+        <div class="row" *ngFor="let cmd of filteredCommands">
+
+            <span class="cmd-id">{{cmd.id}}</span>
+
+            <span>
+                <span class="tag">{{cmd.action}}</span>
+            </span>
+
+            <span class="muted">{{cmd.user}}</span>
+
+            <span class="muted">{{cmd.time}}</span>
+
+            <span>
+                <span class="badge" [ngClass]="{
+            'approved': cmd.status==='APPROVED',
+            'pending': cmd.status==='PENDING',
+            'rejected': cmd.status==='REJECTED'
+          }">
+                    ● {{cmd.status}}
+                </span>
+            </span>
+
+            <span class="review" (click)="openCommand(cmd)">Open</span>
+
+        </div>
+
+    </div>
+
+    <!-- DRAWER -->
+    <div class="drawer-overlay" *ngIf="isDrawerOpen && selectedCommand as cmd">
+
+        <div class="drawer">
+
+            <!-- HEADER -->
+            <div class="drawer-header">
+                <div class="left">
+                    <span class="shield">🛡</span>
+                    <h3>{{cmd.id}}</h3>
+                </div>
+                <button class="close-btn" (click)="closeDrawer()">✕</button>
+            </div>
+
+            <p class="meta">
+                {{cmd.action}} • submitted by {{cmd.user}} • {{cmd.time}}
+            </p>
+
+            <!-- STATUS -->
+            <div class="status-badge" [ngClass]="cmd.status.toLowerCase()">
+                ● {{cmd.status}}
+            </div>
+
+            <!-- PAYLOAD -->
+            <div class="section">
+                <p class="label">PAYLOAD</p>
+                <pre>{{cmd.payload | json}}</pre>
+            </div>
+
+            <!-- NOTES -->
+            <div class="section">
+                <p class="label">DECISION NOTES</p>
+
+                <!-- PENDING -->
+                <textarea *ngIf="cmd.status==='PENDING'" [(ngModel)]="cmd.notes"
+                    placeholder="Document your rationale for audit...">
+</textarea>
+
+                <!-- APPROVED / REJECTED -->
+                <textarea *ngIf="cmd.status==='PENDING'" [(ngModel)]="selectedCommand.notes"
+                    placeholder="Document your rationale for audit...">
+</textarea>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="drawer-footer">
+
+                <!-- PENDING ACTIONS -->
+                <ng-container *ngIf="cmd.status==='PENDING'">
+                    <button class="reject" (click)="rejectCommand()">✕ Reject</button>
+                    <button class="approve" (click)="approveCommand()">✓ Approve</button>
+                </ng-container>
+
+                <!-- INFO -->
+                <div *ngIf="cmd.status!=='PENDING'" class="info-box">
+                    This command has already been reviewed. Note: "{{cmd.notes}}"
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

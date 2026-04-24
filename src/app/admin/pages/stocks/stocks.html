@@ -1,1 +1,123 @@
-<p>stocks works!</p>
+<div class="stocks-container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <h2>Stock Management</h2>
+        <p>Manage the tradable universe. Status changes immediately affect eligibility and queue deallocations.</p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filters">
+
+        <div class="tabs">
+            <button [class.active]="activeTab==='ALL'" (click)="activeTab='ALL'">All Stocks</button>
+            <button [class.active]="activeTab==='ELIGIBLE'" (click)="activeTab='ELIGIBLE'">Eligible</button>
+        </div>
+
+        <input class="search" placeholder="Symbol or name..." [(ngModel)]="searchText" />
+
+        <!-- Updated sectors -->
+        <select class="dropdown" [(ngModel)]="selectedSector">
+            <option *ngFor="let s of sectors" [value]="s">{{s}}</option>
+        </select>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table">
+
+        <div class="table-header">
+            <span>SYMBOL</span>
+            <span>NAME</span>
+            <span>SECTOR</span>
+            <span>PRICE</span>
+            <span>LIQUIDITY</span>
+            <span>RISK</span>
+            <span>STATUS</span>
+            <span>ACTIONS</span>
+        </div>
+
+        <div class="row" *ngFor="let stock of filteredStocks">
+
+            <!-- SYMBOL -->
+            <span class="symbol">{{stock.symbol}}</span>
+
+            <!-- NAME -->
+            <span>{{stock.name}}</span>
+
+            <!-- SECTOR -->
+            <span class="muted">{{stock.sector}}</span>
+
+            <!-- PRICE -->
+            <span>${{stock.price}}</span>
+
+            <!-- LIQUIDITY -->
+            <span class="liquidity">
+                <div class="bar">
+                    <div class="fill" [style.width.%]="stock.liquidity"></div>
+                </div>
+                {{stock.liquidity}}
+            </span>
+
+            <!-- RISK -->
+            <span>
+                <span class="badge" [ngClass]="{
+            'low': stock.risk==='LOW',
+            'medium': stock.risk==='MEDIUM',
+            'high': stock.risk==='HIGH'
+          }">
+                    {{stock.risk}}
+                </span>
+            </span>
+
+            <!-- STATUS -->
+            <span>
+                <span class="badge status" [ngClass]="{
+            'active': stock.status==='ACTIVE',
+            'suspended': stock.status==='SUSPENDED',
+            'blacklisted': stock.status==='BLACKLISTED'
+          }">
+                    {{stock.status}}
+                </span>
+            </span>
+
+            <!-- ACTIONS -->
+            <span class="actions">
+
+                <!-- COLUMN 1: Suspend / Activate -->
+                <span class="action-col">
+
+                    <!-- ACTIVE -->
+                    <button *ngIf="stock.status==='ACTIVE'" (click)="toggleSuspend(stock)">
+                        Suspend
+                    </button>
+
+                    <!-- SUSPENDED -->
+                    <button *ngIf="stock.status==='SUSPENDED'" class="activate" (click)="activate(stock)">
+                        Activate
+                    </button>
+
+                    <!-- BLACKLISTED -->
+                    <button *ngIf="stock.status==='BLACKLISTED'" class="activate" (click)="activate(stock)">
+                        Activate
+                    </button>
+
+                </span>
+
+                <!-- COLUMN 2: Blacklist -->
+                <span class="action-col">
+
+                    <!-- Hide if BLACKLISTED -->
+                    <button *ngIf="stock.status!=='BLACKLISTED'" class="danger" (click)="blacklist(stock)">
+                        Blacklist
+                    </button>
+
+                </span>
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>

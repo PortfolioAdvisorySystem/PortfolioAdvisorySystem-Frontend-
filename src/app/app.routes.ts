@@ -13,9 +13,9 @@ import { HomeComponent } from './home/home';
 import { AdminLayoutComponent } from './admin/layout/admin-layout/admin-layout';
 import { DashboardComponent as AdminDashboard } from './admin/pages/dashboard/dashboard';
 import { Rules} from './admin/pages/rules/rules';
-// import { StocksComponent } from './admin/pages/stocks/stocks';
-// import { WorkflowComponent } from './admin/pages/workflow/workflow';
-// import { SubscribersComponent } from './admin/pages/subscribers/subscribers';
+import { StocksComponent } from './admin/pages/stocks/stocks';
+import { WorkflowComponent } from './admin/pages/workflow/workflow';
+import { SubscribersComponent } from './admin/pages/subscribers/subscribers';
 // import { StrategiesComponent } from './admin/pages/strategies/strategies';
  import { ReportsComponent } from './admin/pages/reports/reports';
 import { AuditLogs } from './admin/pages/audit-logs/audit-logs';
@@ -38,9 +38,9 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: AdminDashboard },
       { path: 'rules', component: Rules },
-      // { path: 'stocks', component: StocksComponent },
-      // { path: 'workflow', component: WorkflowComponent },
-      // { path: 'subscribers', component: SubscribersComponent },
+      { path: 'stocks', component: StocksComponent },
+      { path: 'workflow', component: WorkflowComponent },
+      { path: 'subscribers', component: SubscribersComponent },
       // { path: 'strategies', component: StrategiesComponent },
        { path: 'reports', component: ReportsComponent },
       { path: 'audit-logs', component: AuditLogs },

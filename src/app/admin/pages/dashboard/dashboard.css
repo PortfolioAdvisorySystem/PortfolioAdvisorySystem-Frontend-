@@ -306,17 +306,14 @@ h1 {
     visibility: hidden;
     position: absolute;
     bottom: 110%;
-    /* Positions it above the bar */
     left: 50%;
     transform: translateX(-50%);
     background: #1f2937;
     color: #22c55e;
-    /* Green text like your image */
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 12px;
     font-family: 'Courier New', monospace;
-    /* Monospace look */
     white-space: nowrap;
     border: 1px solid #374151;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -399,15 +396,12 @@ h1 {
     font-size: 14px;
     border: 1px solid #2d3748;
     z-index: 5;
-    /* Above the ::after circle */
     visibility: hidden;
     opacity: 0;
     transition: opacity 0.2s;
     pointer-events: none;
-    /* User can hover the segments behind it */
 }
 
-/* Show tooltip when hovering over the donut */
 .donut:hover .donut-tooltip {
     visibility: visible;
     opacity: 1;
