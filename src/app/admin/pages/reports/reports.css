@@ -1,0 +1,63 @@
+.tabs {
+    display: flex;
+    gap: 10px;
+    background: #0f172a;
+    padding: 8px;
+    border-radius: 10px;
+    width: fit-content;
+  }
+  
+  .tabs span {
+    padding: 8px 14px;
+    color: #94a3b8;
+    cursor: pointer;
+  }
+  
+  .tabs span.active {
+    background: #020617;
+    color: white;
+  }
+  
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .card {
+    background: #0f172a;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .bar {
+    height: 6px;
+    background: #1e293b;
+    margin: 6px 0 12px;
+  }
+  
+  .fill {
+    height: 100%;
+    background: orange;
+  }
+  
+  .fill.danger {
+    background: red;
+  }
+  
+  .fill.warn {
+    background: orange;
+  }
+  
+  .highlight {
+    color: #fbbf24;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  td {
+    padding: 10px;
+    border-bottom: 1px solid #1e293b;
+  }

@@ -1,1 +1,120 @@
-<p>reports works!</p>
+<h1>Reporting & Analytics</h1>
+
+<!-- TABS -->
+<div class="tabs">
+  <span (click)="setTab('allocation')" [class.active]="activeTab==='allocation'">Allocation</span>
+  <span (click)="setTab('migration')" [class.active]="activeTab==='migration'">Migration</span>
+  <span (click)="setTab('rebalance')" [class.active]="activeTab==='rebalance'">Rebalance</span>
+  <span (click)="setTab('risk')" [class.active]="activeTab==='risk'">Risk & breach</span>
+  <span (click)="setTab('unallocated')" [class.active]="activeTab==='unallocated'">Unallocated</span>
+  <span (click)="setTab('deallocation')" [class.active]="activeTab==='deallocation'">Deallocation</span>
+</div>
+
+<!-- ================= ALLOCATION ================= -->
+<div *ngIf="activeTab==='allocation'" class="grid">
+
+  <div class="card">
+    <h3>Allocation by strategy</h3>
+
+    <div *ngFor="let s of strategies">
+      <div class="row">
+        <span>{{s.name}}</span>
+        <span>{{s.value}}%</span>
+      </div>
+      <div class="bar">
+        <div class="fill" [style.width]="s.value + '%'"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Allocation by subscriber</h3>
+
+    <table>
+      <tr *ngFor="let s of subscribers">
+        <td class="highlight">{{s.id}}</td>
+        <td>{{s.profile}}</td>
+        <td>{{s.aum}}</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+
+<!-- ================= MIGRATION ================= -->
+<div *ngIf="activeTab==='migration'" class="card">
+  <table>
+    <tr *ngFor="let m of migrations">
+      <td class="highlight">{{m.id}}</td>
+      <td>{{m.sub}}</td>
+      <td>{{m.from}}</td>
+      <td>{{m.to}}</td>
+      <td>{{m.amount}}</td>
+      <td>{{m.when}}</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ================= REBALANCE ================= -->
+<div *ngIf="activeTab==='rebalance'" class="grid">
+
+  <div class="card">
+    <h3>Rebalance history</h3>
+
+    <table>
+      <tr *ngFor="let r of rebalances">
+        <td class="highlight">{{r.run}}</td>
+        <td>{{r.by}}</td>
+        <td>{{r.subs}}</td>
+        <td>{{r.status}}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Simulate rebalance</h3>
+    <input placeholder="run id" />
+    <button>Simulate</button>
+  </div>
+
+</div>
+
+<!-- ================= RISK ================= -->
+<div *ngIf="activeTab==='risk'" class="card">
+
+  <h3>Rule breach summary</h3>
+
+  <div *ngFor="let r of risks">
+    <span>{{r.name}}</span>
+    <div class="bar">
+      <div class="fill danger" *ngIf="r.type==='danger'" [style.width]="r.value + '%'"></div>
+      <div class="fill warn" *ngIf="r.type==='warn'" [style.width]="r.value + '%'"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= UNALLOCATED ================= -->
+<div *ngIf="activeTab==='unallocated'" class="card">
+  <table>
+    <tr *ngFor="let u of unallocated">
+      <td class="highlight">{{u.sub}}</td>
+      <td>{{u.amount}}</td>
+      <td>{{u.reason}}</td>
+      <td>{{u.days}}</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ================= DEALLOCATION ================= -->
+<div *ngIf="activeTab==='deallocation'" class="card">
+  <table>
+    <tr *ngFor="let d of deallocation">
+      <td class="highlight">{{d.id}}</td>
+      <td>{{d.symbol}}</td>
+      <td>{{d.reason}}</td>
+      <td>{{d.amount}}</td>
+      <td>{{d.when}}</td>
+    </tr>
+  </table>
+</div>
