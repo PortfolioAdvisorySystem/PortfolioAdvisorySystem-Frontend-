@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 export class Rules {
   searchTerm: string = '';
   selectedStatus: string = 'ALL';
+  formError: string = '';
 
   rules = [
     {
@@ -92,11 +93,19 @@ export class Rules {
 
   openModal() {
     this.isModalOpen = true;
+    this.formError = '';
   }
 
   closeModal() {
     this.isModalOpen = false;
+    this.formError = '';
     this.newRule = this.getEmptyRule(); // reset form
+  }
+
+  clearError() {
+    if (this.formError) {
+      this.formError = '';
+    }
   }
 
   getEmptyRule() {
@@ -112,7 +121,20 @@ export class Rules {
 
   addRule() {
 
-    if (!this.newRule.name) return;
+    // 🔴 VALIDATION CHECK
+    if (
+      !this.newRule.name ||
+      !this.newRule.type ||
+      !this.newRule.threshold ||
+      !this.newRule.priority ||
+      !this.newRule.effective
+    ) {
+      this.formError = 'All fields are required';
+      return;
+    }
+
+    // ✅ CLEAR ERROR
+    this.formError = '';
 
     const newId = 'R-' + (1000 + this.rules.length + 1);
 
@@ -123,20 +145,19 @@ export class Rules {
       threshold: this.newRule.threshold + '%',
       priority: 'P' + this.newRule.priority,
       effective: this.newRule.effective,
-      status: 'ACTIVE' 
+      status: 'ACTIVE'
     };
 
     this.rules.unshift(ruleToAdd);
 
-    this.applyFilters(); // update UI
-
+    this.applyFilters();
     this.closeModal();
   }
 
   toggleStatus(rule: any) {
-  rule.status = rule.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    rule.status = rule.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
 
-  // re-apply filters so UI stays consistent
-  this.applyFilters();
-}
+    // re-apply filters so UI stays consistent
+    this.applyFilters();
+  }
 }

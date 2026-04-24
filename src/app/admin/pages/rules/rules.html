@@ -3,7 +3,6 @@
     <!-- HEADER -->
     <div class="header">
         <div>
-            <p class="module">// MODULE</p>
             <h1>Rule Management</h1>
             <p class="subtitle">
                 Govern allocation behavior. All mutations flow through the maker-checker workflow.
@@ -101,13 +100,13 @@
             <!-- NAME -->
             <div class="form-group full">
                 <label>NAME</label>
-                <input [(ngModel)]="newRule.name" placeholder="e.g. Tech sector cap">
+                <input [(ngModel)]="newRule.name" (input)="clearError()" placeholder="e.g. Tech sector cap">
             </div>
 
             <!-- TYPE -->
             <div class="form-group">
                 <label>TYPE</label>
-                <select [(ngModel)]="newRule.type">
+                <select [(ngModel)]="newRule.type" (change)="clearError()">
                     <option value="SECTOR_CAP">SECTOR_CAP</option>
                     <option value="CONCENTRATION">CONCENTRATION</option>
                     <option value="LIQUIDITY">LIQUIDITY</option>
@@ -119,31 +118,36 @@
             <!-- THRESHOLD -->
             <div class="form-group">
                 <label>THRESHOLD (%)</label>
-                <input type="number" [(ngModel)]="newRule.threshold">
+                <input type="number" [(ngModel)]="newRule.threshold" (input)="clearError()">
             </div>
 
             <!-- PRIORITY -->
             <div class="form-group">
                 <label>PRIORITY</label>
-                <input type="number" [(ngModel)]="newRule.priority">
+                <input type="number" [(ngModel)]="newRule.priority" (input)="clearError()">
             </div>
 
             <!-- EFFECTIVE -->
             <div class="form-group">
                 <label>EFFECTIVE</label>
-                <input type="date" [(ngModel)]="newRule.effective">
+                <input type="date" [(ngModel)]="newRule.effective" (change)="clearError()">
             </div>
 
             <!-- EXPIRY -->
             <div class="form-group full">
                 <label>EXPIRY (OPTIONAL)</label>
-                <input type="date" [(ngModel)]="newRule.expiry">
+                <input type="date" [(ngModel)]="newRule.expiry" (change)="clearError()">
             </div>
 
         </div>
 
+
+
         <!-- ACTION -->
         <div class="modal-footer">
+            <div class="error-text" *ngIf="formError">
+                {{ formError }}
+            </div>
             <button class="submit-btn" (click)="addRule()">Submit for approval</button>
         </div>
 

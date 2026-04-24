@@ -1,0 +1,185 @@
+.stocks-container {
+    padding: 20px;
+    background: #0b1220;
+    color: #e5e7eb;
+    min-height: 100vh;
+    font-family: Inter, sans-serif;
+}
+
+/* HEADER */
+.header h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.header p {
+    color: #9ca3af;
+    font-size: 13px;
+}
+
+/* FILTERS */
+.filters {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.tabs button {
+    background: #111827;
+    border: none;
+    padding: 8px 14px;
+    color: #9ca3af;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.tabs .active {
+    background: #1f2937;
+    color: white;
+}
+
+.search {
+    flex: 1;
+    background: #111827;
+    border: 1px solid #1f2937;
+    padding: 8px 12px;
+    color: white;
+    border-radius: 6px;
+}
+
+.dropdown {
+    background: #111827;
+    border: 1px solid #1f2937;
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+/* TABLE */
+.table {
+    background: #0f172a;
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-header,
+.row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1.5fr 1fr 2fr 1fr 1fr 2fr;
+    padding: 12px 16px;
+    align-items: center;
+}
+
+.table-header {
+    font-size: 12px;
+    color: #6b7280;
+    border-bottom: 1px solid #1f2937;
+}
+
+.row {
+    border-bottom: 1px solid #1f2937;
+}
+
+.row:hover {
+    background: #111827;
+}
+
+.symbol {
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.muted {
+    color: #9ca3af;
+}
+
+/* Liquidity */
+.liquidity {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bar {
+    width: 100px;
+    height: 6px;
+    background: #1f2937;
+    border-radius: 4px;
+}
+
+.fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 4px;
+}
+
+/* Badges */
+.badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+}
+
+.low {
+    background: #064e3b;
+    color: #34d399;
+}
+
+.medium {
+    background: #78350f;
+    color: #fbbf24;
+}
+
+.high {
+    background: #7f1d1d;
+    color: #f87171;
+}
+
+/* Status */
+.status.active {
+    background: #064e3b;
+    color: #22c55e;
+}
+
+.status.suspended {
+    background: #78350f;
+    color: #fbbf24;
+}
+
+.actions {
+  display: flex;
+  gap: 30px; /* spacing between two columns */
+  align-items: center;
+}
+
+.action-col {
+  display: flex;
+  align-items: center;
+}
+
+.actions .activate {
+  color: #22c55e;
+}
+
+.actions .danger {
+  color: #ef4444;
+}
+
+.actions button {
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* Suspend */
+.actions button:not(.activate):not(.danger) {
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+/* Hover effect (matches premium UI feel) */
+.actions button:hover {
+  opacity: 0.85;
+}

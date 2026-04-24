@@ -1,1 +1,72 @@
-<p>subscribers works!</p>
+<div class="subscriber-container">
+
+    <!-- HEADER -->
+    <div class="header-row">
+        <div>
+            <h2>Subscriber Management</h2>
+            <p>Onboarding, strategy mix, inflows, and per-subscriber allocation breakdowns.</p>
+        </div>
+
+
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filters">
+
+        <input class="search" placeholder="Filter by ID or name..." [(ngModel)]="searchText" />
+
+        <select class="dropdown" [(ngModel)]="selectedStatus">
+            <option value="ALL">All statuses</option>
+            <option value="ACTIVE">Active</option>
+            <option value="PAUSED">Paused</option>
+            <option value="EXITED">Exited</option>
+        </select>
+
+        <select class="dropdown" [(ngModel)]="selectedRisk">
+            <option value="ALL">All risk profiles</option>
+            <option value="Conservative">Conservative</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Aggressive">Aggressive</option>
+        </select>
+
+        <div class="stats">
+            24 / 24 SUBS &nbsp;&nbsp; 
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table">
+
+        <div class="table-header">
+            <span>SUBSCRIBER ID</span>
+            <span>NAME</span>
+            <span>AUM</span>
+            <span>RISK PROFILE</span>
+            <span>ONBOARDED</span>
+            <span>STATUS</span>
+        </div>
+
+        <div class="row" *ngFor="let s of filteredSubscribers">
+
+            <span class="id">{{s.id}}</span>
+            <span>{{s.name}}</span>
+            <span>${{s.aum | number}}</span>
+            <span class="muted">{{s.risk}}</span>
+            <span class="muted">{{s.onboarded}}</span>
+
+            <span>
+                <span class="badge" [ngClass]="{
+            'active': s.status==='ACTIVE',
+            'paused': s.status==='PAUSED',
+            'exited': s.status==='EXITED'
+          }">
+                    ● {{s.status}}
+                </span>
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
