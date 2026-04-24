@@ -225,7 +225,6 @@ input, select {
   outline: none;
 }
 
-/* FOCUS (important visual detail) */
 input:focus {
   border: 1px solid #f59e0b;
   box-shadow: 0 0 0 1px #f59e0b;

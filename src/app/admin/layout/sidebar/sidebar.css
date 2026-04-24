@@ -14,7 +14,7 @@
   font-weight: 600;
   color: #e5e7eb;
 
-  margin-bottom: 24px; /* ✅ space below logo */
+  margin-bottom: 24px; 
 }
 
 .menu {
@@ -22,7 +22,7 @@
   flex-direction: column;
   gap: 8px;
 
-  margin-top: 10px; /* ✅ pushes menu slightly down */
+  margin-top: 10px; 
 }
 
 

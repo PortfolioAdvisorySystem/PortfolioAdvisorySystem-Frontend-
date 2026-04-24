@@ -82,8 +82,6 @@ export class WorkflowComponent {
     if (!this.selectedCommand) return;
 
     this.selectedCommand.status = 'APPROVED';
-
-    // optional: add default note if empty
     if (!this.selectedCommand.notes) {
       this.selectedCommand.notes = 'Approved — within mandate.';
     }

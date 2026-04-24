@@ -61,16 +61,14 @@ export class Rules {
     }
   ];
 
-  // ✅ filtered data shown in UI
   filteredRules = [...this.rules];
 
 
-  // ✅ MAIN FILTER FUNCTION
   applyFilters() {
 
     this.filteredRules = this.rules.filter(rule => {
 
-      // 🔍 SEARCH FILTER
+      //  SEARCH FILTER
       const search = this.searchTerm.toLowerCase();
 
       const matchesSearch =
@@ -78,7 +76,7 @@ export class Rules {
         rule.name.toLowerCase().includes(search) ||
         rule.type.toLowerCase().includes(search);
 
-      // 📌 STATUS FILTER
+      //  STATUS FILTER
       const matchesStatus =
         this.selectedStatus === 'ALL' ||
         rule.status === this.selectedStatus;
@@ -99,7 +97,7 @@ export class Rules {
   closeModal() {
     this.isModalOpen = false;
     this.formError = '';
-    this.newRule = this.getEmptyRule(); // reset form
+    this.newRule = this.getEmptyRule();
   }
 
   clearError() {
@@ -121,7 +119,7 @@ export class Rules {
 
   addRule() {
 
-    // 🔴 VALIDATION CHECK
+    // VALIDATION CHECK
     if (
       !this.newRule.name ||
       !this.newRule.type ||
@@ -133,7 +131,7 @@ export class Rules {
       return;
     }
 
-    // ✅ CLEAR ERROR
+    //  CLEAR ERROR
     this.formError = '';
 
     const newId = 'R-' + (1000 + this.rules.length + 1);

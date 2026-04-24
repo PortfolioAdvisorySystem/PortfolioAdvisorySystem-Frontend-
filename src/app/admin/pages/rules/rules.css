@@ -225,7 +225,7 @@ input, select {
 }
 
 .error-text {
-  color: #ef4444;       /* red */
+  color: #ef4444;       
   font-size: 12px;
   margin-bottom: 8px;
 }

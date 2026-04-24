@@ -149,7 +149,7 @@
 
 .actions {
   display: flex;
-  gap: 30px; /* spacing between two columns */
+  gap: 30px; 
   align-items: center;
 }
 
@@ -179,7 +179,6 @@
   font-weight: 500;
 }
 
-/* Hover effect (matches premium UI feel) */
 .actions button:hover {
   opacity: 0.85;
 }
