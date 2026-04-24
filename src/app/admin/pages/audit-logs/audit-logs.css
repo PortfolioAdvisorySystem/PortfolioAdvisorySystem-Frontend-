@@ -1,5 +1,5 @@
 
-body, html { margin:0; font-family: Arial; background:#0b0f14; color:#cbd5e1; }
+body, html { margin:0; font-family: Arial; background:#0b1220; color:#cbd5e1; }
 .container { display:flex; height:100vh; }
 .sidebar { width:240px; background:#0a0e13; padding:20px; display:flex; flex-direction:column; justify-content:space-between; }
 .logo { font-weight:bold; margin-bottom:20px; }
@@ -9,7 +9,7 @@ body, html { margin:0; font-family: Arial; background:#0b0f14; color:#cbd5e1; }
 .badge { background:#fbbf24; color:#000; padding:2px 6px; border-radius:4px; margin-left:6px; }
 .status { font-size:12px; color:#22c55e; }
 
-.main { flex:1; display:flex; flex-direction:column; }
+.main { flex:1; display:flex; flex-direction:column; background: #0b1220;}
 .topbar { display:flex; justify-content:space-between; padding:15px; background:#0a0e13; }
 .topbar input { width:50%; padding:8px; background:#111827; border:none; color:#fff; }
 .live { color:#22c55e; margin-right:20px; }
@@ -23,9 +23,34 @@ th, td { padding:12px; border-bottom:1px solid #1f2937; }
 .log-id { color:#fbbf24; }
 
 .tag { padding:4px 8px; border-radius:4px; font-size:12px; }
-.CREATE { background:#16a34a; }
-.SUSPEND { background:#f59e0b; }
-.STRATEGY_CHANGE { background:#06b6d4; }
-.UPDATE { background:#0ea5e9; }
-.REJECT { background:#dc2626; }
-.DEALLOCATE { background:#f59e0b; }
+
+.ALLOCATION_RUN {
+    color: #38bdd8;
+    background: #394143;
+     
+     }
+.SUBSCRIBER_ONBOARDED{
+     color: #23c45e;
+    background: #2b3835;
+}
+.REBALANCE_COMPLETED {   color: #34d399;
+    background: #064e3b;}
+.STRATEGY_CHANGE { border: 1px solid #06b6d4; border-radius: 2px;}
+.INFLOW_APPLIED { color: #9b0dc7;
+ background: #3e3741; }
+.DEALLOCATION_SCAN { color:rgb(223, 84, 84);background:  rgb(74, 51, 51); }
+.STOCK_CREATED{
+     color: #77dea5;
+    background: #2a3c31;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  cursor: pointer;
+}

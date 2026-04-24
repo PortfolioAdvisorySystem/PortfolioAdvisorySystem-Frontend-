@@ -16,7 +16,6 @@ export class ReportsComponent {
     this.activeTab = tab;
   }
 
-  // -------- DATA --------
 
   strategies = [
     { name: 'Conservative', value: 42 },

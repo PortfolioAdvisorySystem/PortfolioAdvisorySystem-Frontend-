@@ -1,7 +1,7 @@
 .tabs {
     display: flex;
     gap: 10px;
-    background: #0f172a;
+    background: #1d2c57;
     padding: 8px;
     border-radius: 10px;
     width: fit-content;
@@ -25,7 +25,7 @@
   }
   
   .card {
-    background: #0f172a;
+    background: #0b1220;
     padding: 20px;
     border-radius: 10px;
   }

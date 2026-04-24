@@ -17,10 +17,15 @@
     <div class="filters">
         <div class="filter-search">
             <span>🔍</span>
-            <input placeholder="Filter by ID, name, type..." [(ngModel)]="searchTerm" (input)="applyFilters()" />
+            <input
+                placeholder="Filter by ID, name, type..."
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()" />
         </div>
 
-        <select class="dropdown" [(ngModel)]="selectedStatus" (change)="applyFilters()">
+        <select class="dropdown"
+                [(ngModel)]="selectedStatus"
+                (change)="applyFilters()">
 
             <option value="ALL">All statuses</option>
             <option value="ACTIVE">Active</option>
@@ -28,7 +33,9 @@
 
         </select>
 
-        <span class="rule-count">{{filteredRules.length}} / {{rules.length}} RULES</span>
+        <span class="rule-count">
+            {{filteredRules.length}} / {{rules.length}} RULES
+        </span>
     </div>
 
     <!-- TABLE -->
@@ -53,24 +60,30 @@
 
             <span>{{rule.name}}</span>
 
-            <span class="muted">{{rule.type}}</span>
+            <!-- ✅ FIX: use type -->
+            <span class="muted">{{rule.ruleType}}</span>
 
             <span>{{rule.threshold}}</span>
 
             <span>{{rule.priority}}</span>
 
-            <span class="muted">{{rule.effective}}</span>
+            <!-- ✅ FIX: use effective -->
+            <span class="muted">{{rule.effectiveDate}}</span>
 
+            <!-- ✅ FIX: use active -->
             <span>
-                <span class="status" [ngClass]="rule.status === 'ACTIVE' ? 'active' : 'inactive'">
-                    ● {{rule.status}}
+                <span class="status"
+                      [ngClass]="rule.active ? 'active' : 'inactive'">
+                    ● {{ rule.active ? 'ACTIVE' : 'INACTIVE' }}
                 </span>
             </span>
 
+            <!-- ✅ FIX: use active -->
             <span>
-                <span class="action" [ngClass]="rule.status === 'ACTIVE' ? 'red' : 'green'"
-                    (click)="toggleStatus(rule)">
-                    ⏻ {{ rule.status === 'ACTIVE' ? 'Deactivate' : 'Activate' }}
+                <span class="action"
+                      [ngClass]="rule.active ? 'red' : 'green'"
+                      (click)="toggleStatus(rule)">
+                    ⏻ {{ rule.active ? 'Deactivate' : 'Activate' }}
                 </span>
             </span>
 
@@ -144,7 +157,9 @@
 
         <!-- ACTION -->
         <div class="modal-footer">
-            <button class="submit-btn" (click)="addRule()">Submit for approval</button>
+            <button class="submit-btn" (click)="addRule()">
+                Submit for approval
+            </button>
         </div>
 
     </div>

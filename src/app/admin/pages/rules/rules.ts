@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Rule } from '../../../models/admin';
+import { ApiServices } from '../../../services/api-services';
 
 @Component({
   selector: 'app-rules',
@@ -9,78 +11,47 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './rules.css',
 })
 export class Rules {
+
   searchTerm: string = '';
   selectedStatus: string = 'ALL';
 
-  rules = [
-    {
-      id: 'R-1001',
-      name: 'Tech sector cap',
-      type: 'SECTOR_CAP',
-      threshold: '25%',
-      priority: 'P1',
-      effective: '2025-01-01',
-      status: 'ACTIVE'
-    },
-    {
-      id: 'R-1002',
-      name: 'Single stock concentration',
-      type: 'CONCENTRATION',
-      threshold: '10%',
-      priority: 'P2',
-      effective: '2025-01-01',
-      status: 'ACTIVE'
-    },
-    {
-      id: 'R-1003',
-      name: 'Minimum liquidity',
-      type: 'LIQUIDITY',
-      threshold: '40%',
-      priority: 'P3',
-      effective: '2025-02-14',
-      status: 'ACTIVE'
-    },
-    {
-      id: 'R-1004',
-      name: 'High-risk cap (Aggressive)',
-      type: 'RISK_LIMIT',
-      threshold: '35%',
-      priority: 'P4',
-      effective: '2025-03-01',
-      status: 'ACTIVE'
-    },
-    {
-      id: 'R-1005',
-      name: 'Sanctioned issuers',
-      type: 'BLACKLIST',
-      threshold: '0%',
-      priority: 'P10',
-      effective: '2024-11-10',
-      status: 'INACTIVE'
-    }
-  ];
+  rules: Rule[] = [];
+  filteredRules: Rule[] = [];
 
-  // ✅ filtered data shown in UI
-  filteredRules = [...this.rules];
+  constructor(private apiService: ApiServices,private cdr:ChangeDetectorRef) {}
 
+  ngOnInit() {
+    this.apiService.getRules().subscribe({
+      next: (data: Rule[]) => {
+        console.log("API RESPONSE:", data);
+        this.rules = data.map(rule => ({
+          ...rule,
+          status: rule.active ? 'ACTIVE' : 'INACTIVE'
+        }));
+        
+        this.applyFilters(); 
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error loading rules', err);
+      }
+    });
+  }
 
-  // ✅ MAIN FILTER FUNCTION
   applyFilters() {
-
     this.filteredRules = this.rules.filter(rule => {
 
-      // 🔍 SEARCH FILTER
       const search = this.searchTerm.toLowerCase();
 
       const matchesSearch =
-        rule.id.toLowerCase().includes(search) ||
+        String(rule.id).toLowerCase().includes(search) ||
         rule.name.toLowerCase().includes(search) ||
         rule.type.toLowerCase().includes(search);
 
-      // 📌 STATUS FILTER
       const matchesStatus =
         this.selectedStatus === 'ALL' ||
-        rule.status === this.selectedStatus;
+        (this.selectedStatus === 'ACTIVE' && rule.active) ||
+        (this.selectedStatus === 'INACTIVE' && !rule.active);
 
       return matchesSearch && matchesStatus;
     });
@@ -96,7 +67,7 @@ export class Rules {
 
   closeModal() {
     this.isModalOpen = false;
-    this.newRule = this.getEmptyRule(); // reset form
+    this.newRule = this.getEmptyRule();
   }
 
   getEmptyRule() {
@@ -105,8 +76,9 @@ export class Rules {
       type: 'SECTOR_CAP',
       threshold: '',
       priority: '',
-      effective: '',
-      expiry: ''
+      effectiveDate: '',
+      expiry: '',
+      active: false
     };
   }
 
@@ -116,27 +88,29 @@ export class Rules {
 
     const newId = 'R-' + (1000 + this.rules.length + 1);
 
-    const ruleToAdd = {
+    const ruleToAdd: Rule = {
       id: newId,
       name: this.newRule.name,
       type: this.newRule.type,
       threshold: this.newRule.threshold + '%',
       priority: 'P' + this.newRule.priority,
-      effective: this.newRule.effective,
-      status: 'ACTIVE' 
+      effectiveDate: this.newRule.effectiveDate,
+      status: 'ACTIVE', 
+      ruleType: this.newRule.type,
+      active: true
     };
 
     this.rules.unshift(ruleToAdd);
 
-    this.applyFilters(); // update UI
+    this.applyFilters(); 
 
     this.closeModal();
   }
 
-  toggleStatus(rule: any) {
-  rule.status = rule.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+  toggleStatus(rule: Rule) {
+    rule.active = !rule.active;
+    rule.status = rule.active ? 'ACTIVE' : 'INACTIVE';
 
-  // re-apply filters so UI stays consistent
-  this.applyFilters();
-}
+    this.applyFilters();
+  }
 }
