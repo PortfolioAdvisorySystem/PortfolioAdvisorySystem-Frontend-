@@ -1,1 +1,149 @@
-<p>strategies works!</p>
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+      <div>
+        <h1>Strategy Management</h1>
+        <p>Define risk-profile strategies with concentration, sector, and cash-buffer caps.</p>
+      </div>
+  
+      <button class="btn-primary" (click)="showModal = true">
+        + New strategy
+      </button>
+    </div>
+  
+    <!-- FILTERS -->
+    <div class="filters">
+  
+      <input
+        type="text"
+        placeholder="Filter by ID or name..."
+        [(ngModel)]="searchText"
+      />
+  
+      <!-- DROPDOWN -->
+      <div class="dropdown" (click)="dropdownOpen = !dropdownOpen">
+        {{selectedProfile}} ▼
+  
+        <div class="dropdown-menu" *ngIf="dropdownOpen">
+          <div
+            *ngFor="let p of profiles"
+            (click)="selectProfile(p); $event.stopPropagation()"
+            [class.active]="p === selectedProfile"
+          >
+            {{p}}
+          </div>
+        </div>
+      </div>
+  
+    </div>
+  
+    <!-- CARDS -->
+    <div class="grid">
+  
+      <div class="card" *ngFor="let s of filteredStrategies">
+  
+        <div class="card-top">
+          <span class="id">{{s.id}}</span>
+          <span class="badge" [ngClass]="s.profile.toLowerCase()">
+            {{s.profile}}
+          </span>
+        </div>
+  
+        <h3>{{s.name}}</h3>
+  
+        <div class="divider"></div>
+  
+        <div class="stats">
+          <div>
+            <span>MAX STOCK</span>
+            <b>{{s.stock}}%</b>
+          </div>
+  
+          <div>
+            <span>SECTOR CAP</span>
+            <b>{{s.sector}}%</b>
+          </div>
+  
+          <div>
+            <span>CASH BUFFER</span>
+            <b>{{s.cash}}%</b>
+          </div>
+        </div>
+  
+        <div class="divider"></div>
+  
+        <div class="subs">
+          <span>SUBSCRIBERS</span>
+          <b>{{s.subs}}</b>
+        </div>
+  
+      </div>
+  
+    </div>
+  
+    <!-- MODAL -->
+    <div class="modal" *ngIf="showModal">
+  
+      <div class="modal-box">
+  
+        <div class="modal-header">
+          <h2>Create strategy</h2>
+          <span class="close" (click)="showModal = false">✕</span>
+        </div>
+  
+        <p class="sub">Caps are enforced during allocation and rebalance.</p>
+  
+        <label>NAME</label>
+        <input
+          class="input"
+          placeholder="e.g. Balanced Income"
+          [(ngModel)]="newStrategy.name"
+        />
+  
+        <label>RISK PROFILE</label>
+        <div class="dropdown" (click)="modalDropdownOpen = !modalDropdownOpen">
+          {{newStrategy.profile}} ▼
+  
+          <div class="dropdown-menu" *ngIf="modalDropdownOpen">
+            <div
+              *ngFor="let p of profiles.slice(1)"
+              (click)="selectModalProfile(p); $event.stopPropagation()"
+            >
+              {{p}}
+            </div>
+          </div>
+        </div>
+  
+        <div class="form-row">
+          <div>
+            <label>MAX STOCK %</label>
+            <input type="number" [(ngModel)]="newStrategy.stock">
+          </div>
+  
+          <div>
+            <label>SECTOR CAP %</label>
+            <input type="number" [(ngModel)]="newStrategy.sector">
+          </div>
+  
+          <div>
+            <label>CASH BUFFER %</label>
+            <input type="number" [(ngModel)]="newStrategy.cash">
+          </div>
+        </div>
+  
+        <div class="actions">
+          <button class="btn-primary" (click)="submitStrategy()">
+            Submit for approval
+          </button>
+        </div>
+  
+      </div>
+    </div>
+  
+    <!-- TOAST -->
+    <div class="toast" *ngIf="showToast">
+      {{toastMessage}}
+    </div>
+  
+  </div>
