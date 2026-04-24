@@ -1,1 +1,50 @@
-<p>audit-logs works!</p>
+<div class="container">
+    
+     
+    <main class="main">
+      
+  
+      <section class="content">
+        <h1>Audit Logs</h1>
+        <p>Immutable record of every state change across rules, stocks, subscribers, and approvals.</p>
+  
+        <div class="filters">
+          <input 
+            placeholder="Filter by log ID, entity, user..." 
+            [(ngModel)]="searchText"
+            (input)="applyFilters()" 
+          />
+        
+          <select [(ngModel)]="selectedAction" (change)="applyFilters()">
+            <option value="">All actions</option>
+            <option *ngFor="let action of actions" [value]="action">
+              {{action}}
+            </option>
+          </select>
+        </div>
+  
+        <table>
+          <thead>
+            <tr>
+              <th>LOG ID</th>
+              <th>ENTITY</th>
+              <th>ENTITY ID</th>
+              <th>ACTION</th>
+              <th>USER</th>
+              <th>WHEN</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of filteredLogs">
+              <td class="log-id">{{log.id}}</td>
+              <td>{{log.entity}}</td>
+              <td>{{log.entityId}}</td>
+              <td><span class="tag" [ngClass]="log.action">{{log.action}}</span></td>
+              <td>{{log.user}}</td>
+              <td>{{log.when}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>

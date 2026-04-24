@@ -27,16 +27,25 @@
 
 
 /* ===== ITEM ===== */
+.sidebar {
+  width: 240px;
+  background: #0a0e13;
+  padding: 20px 10px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* MENU ITEM */
 .item {
   display: flex;
   align-items: center;
   gap: 12px;
-
   padding: 10px 12px;
   border-radius: 8px;
-
-  color: #9ca3af;
-  transition: 0.2s;
+  cursor: pointer;
+  color: #94a3b8;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
 /* ===== ICON ===== */

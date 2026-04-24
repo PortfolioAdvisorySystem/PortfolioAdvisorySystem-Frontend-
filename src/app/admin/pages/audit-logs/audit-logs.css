@@ -1,0 +1,31 @@
+
+body, html { margin:0; font-family: Arial; background:#0b0f14; color:#cbd5e1; }
+.container { display:flex; height:100vh; }
+.sidebar { width:240px; background:#0a0e13; padding:20px; display:flex; flex-direction:column; justify-content:space-between; }
+.logo { font-weight:bold; margin-bottom:20px; }
+.sidebar ul { list-style:none; padding:0; }
+.sidebar li { padding:10px; cursor:pointer; }
+.sidebar li.active { background:#111827; color:#fbbf24; }
+.badge { background:#fbbf24; color:#000; padding:2px 6px; border-radius:4px; margin-left:6px; }
+.status { font-size:12px; color:#22c55e; }
+
+.main { flex:1; display:flex; flex-direction:column; }
+.topbar { display:flex; justify-content:space-between; padding:15px; background:#0a0e13; }
+.topbar input { width:50%; padding:8px; background:#111827; border:none; color:#fff; }
+.live { color:#22c55e; margin-right:20px; }
+
+.content { padding:20px; }
+.filters { display:flex; gap:10px; margin:20px 0; }
+.filters input, .filters select { padding:8px; background:#111827; border:none; color:#fff; }
+
+table { width:100%; border-collapse:collapse; }
+th, td { padding:12px; border-bottom:1px solid #1f2937; }
+.log-id { color:#fbbf24; }
+
+.tag { padding:4px 8px; border-radius:4px; font-size:12px; }
+.CREATE { background:#16a34a; }
+.SUSPEND { background:#f59e0b; }
+.STRATEGY_CHANGE { background:#06b6d4; }
+.UPDATE { background:#0ea5e9; }
+.REJECT { background:#dc2626; }
+.DEALLOCATE { background:#f59e0b; }
