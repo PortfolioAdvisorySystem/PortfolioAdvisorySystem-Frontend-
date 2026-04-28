@@ -1,0 +1,80 @@
+<div class="container" (keydown)="handleContainerEnter($event)">
+
+ 
+  <div class="top-bar">
+    <div class="label">
+      {{ questions[currentStep].label }}
+    </div>
+
+    <div class="progress-container">
+      <div class="progress" [style.width.%]="progress"></div>
+    </div>
+
+    <div class="step">
+      {{ currentStep + 1 }} / {{ questions.length }}
+    </div>
+  </div>
+
+ 
+  <div class="content">
+
+  
+    <h1>{{ questions[currentStep].title }}</h1>
+
+    <p class="description" *ngIf="questions[currentStep].description">
+      {{ questions[currentStep].description }}
+    </p>
+
+
+
+  
+    <div *ngIf="questions[currentStep].key === 'age'" class="input-container">
+      <input type="number" [(ngModel)]="answers.age" min="18" placeholder="Enter your age" (keydown.enter)="next()"
+        [class.error]="ageError" />
+      <div *ngIf="ageError" class="error-message">{{ ageError }}</div>
+    </div>
+
+
+    <div *ngIf="questions[currentStep].key === 'income'" class="input-container">
+      <input type="number" [(ngModel)]="answers.income" placeholder="Monthly income" (keydown.enter)="next()"
+        [class.error]="incomeError" />
+      <div *ngIf="incomeError" class="error-message">{{ incomeError }}</div>
+    </div>
+
+  
+    <div *ngIf="questions[currentStep].key === 'liabilities'" class="input-container">
+      <input type="number" [(ngModel)]="answers.liabilities" placeholder="Total liabilities" (keydown.enter)="next()"
+        [class.error]="liabilitiesError" />
+      <div *ngIf="liabilitiesError" class="error-message">{{ liabilitiesError }}</div>
+    </div>
+
+   
+    <div *ngIf="questions[currentStep].options" class="options-container">
+
+      <div class="option" *ngFor="let opt of questions[currentStep].options"
+        [class.selected]="answers[questions[currentStep].key] === opt" (click)="selectOption(opt)"
+        (keydown.enter)="handleEnter()" tabindex="0">
+
+        {{ opt }}
+      </div>
+
+    </div>
+
+    
+    <div *ngIf="optionsError && optionsError.length > 0 && hasAttemptedToProgress" class="error-message">{{ optionsError
+      }}</div>
+
+  </div>
+
+
+  <div class="bottom">
+
+    <button class="back" (click)="back()">← Back</button>
+
+    <button class="next" (click)="next()">
+      {{ currentStep === questions.length - 1 ? 'See Results' : 'Continue →' }}
+    </button>
+
+  </div>
+
+</div>
