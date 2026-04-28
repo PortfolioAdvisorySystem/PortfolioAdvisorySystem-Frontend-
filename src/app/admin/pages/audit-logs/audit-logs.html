@@ -46,7 +46,7 @@
           ⬅ Prev
         </button>
 
-        <span>Page {{currentPage}}</span>
+        <span>Page {{currentPage}} of {{totalPages}}</span>
 
         <button (click)="nextPage()" [disabled]="currentPage * pageSize >= filteredLogs.length">
           Next ➡

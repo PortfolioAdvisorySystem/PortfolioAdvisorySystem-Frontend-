@@ -18,13 +18,7 @@ getRules(): Observable<Rule[]> {
     return this.http.get<Rule[]>(`${this.adminUrl}/rules`);
   }
 
-  saveRule(rule: any): Observable<Rule> {
-    return this.http.post<Rule>(`${this.adminUrl}/rules`, rule);
-  }
-
-  updateRuleStatus(id: string, status: string): Observable<Rule> {
-    return this.http.patch<Rule>(`${this.adminUrl}/rules/${id}`, { status });
-  }
+ 
   getAuditLogs() {
   return this.http.get<AuditLog[]>(`${this.adminUrl}/reports/audit-logs`);
 }
@@ -94,15 +88,28 @@ createStrategy(data: any) {
 getDashboard() {
   return this.http.get<any>(`${this.adminUrl}/reports/dashboard`);
 }
-
+ createRule(rule: any): Observable<Rule> {
+  console.log('Creating rule with payload:', rule);
+    return this.http.post<Rule>(`${this.adminUrl}/rules`, rule);
+  }
 //update 
 // blacklistStock(stockId: number) {
 //   return this.http.post(`${this.adminUrl}/stocks/${stockId}/blacklist`, {});
 // }
 activateStock(stockId: number) {
+  console.log('Activating stock with ID:', stockId);
   return this.http.put(`${this.adminUrl}/stocks/${stockId}/activate`, {});
 }
 suspendStock(stockId: number) {
   return this.http.put(`${this.adminUrl}/stocks/${stockId}/suspend`, {});
+}
+
+  
+activateRule(ruleId: number) {
+  return this.http.put(`${this.adminUrl}/rules/${ruleId}/activate`, {});
+}
+
+deactivateRule(ruleId: number) {
+  return this.http.put(`${this.adminUrl}/rules/${ruleId}/deactivate`, {});
 }
 }

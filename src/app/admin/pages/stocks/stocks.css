@@ -31,9 +31,10 @@
     color: #9ca3af;
     border-radius: 6px;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.tabs .active {
+.tabs button.active {
     background: #1f2937;
     color: white;
 }

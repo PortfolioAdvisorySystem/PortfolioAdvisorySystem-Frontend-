@@ -18,7 +18,7 @@ export class StocksComponent {
   searchText = '';
 
   stocks: Stock[] = [];
-  filteredStocks: Stock[] = [];   // ✅ FIX (missing)
+  filteredStocks: Stock[] = [];
 
   currentPage = 1;
   pageSize = 10;
@@ -72,40 +72,44 @@ export class StocksComponent {
     this.apiService.suspendStock(stock.id).subscribe({
       next: () => {
         stock.active = false;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Suspend failed', err);
         alert('Failed to suspend stock');
       }
     });
+    this.cdr.detectChanges();
 
   } else {
     this.apiService.activateStock(stock.id).subscribe({
       next: () => {
         stock.active = true;
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Activate failed', err);
         alert('Failed to activate stock');
       }
     });
+    
   }
 
 }
 
-  activate(stock: Stock) {
+//   activate(stock: Stock) {
 
-  this.apiService.activateStock(stock.id).subscribe({
-    next: () => {
-      stock.active = true;
-    },
-    error: (err) => {
-      console.error('Activate failed', err);
-      alert('Failed to activate stock');
-    }
-  });
+//   this.apiService.activateStock(stock.id).subscribe({
+//     next: () => {
+//       stock.active = true;
+//     },
+//     error: (err) => {
+//       console.error('Activate failed', err);
+//       alert('Failed to activate stock');
+//     }
+//   });
 
-}
+// }
 
 //   blacklist(stock: Stock) {
 

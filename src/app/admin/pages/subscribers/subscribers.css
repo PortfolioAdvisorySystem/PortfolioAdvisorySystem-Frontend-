@@ -246,3 +246,48 @@ input:focus {
   font-weight: 500;
   cursor: pointer;
 }
+.pagination {
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+
+  padding: 12px 0;
+}
+
+/* BUTTONS */
+.pagination button {
+  background: #111827;
+  border: 1px solid #1f2937;
+  color: #e5e7eb;
+
+  padding: 8px 14px;
+  border-radius: 6px;
+
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+
+  transition: all 0.2s ease;
+}
+
+/* HOVER */
+.pagination button:hover:not(:disabled) {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+/* DISABLED */
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* PAGE TEXT */
+.pagination span {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+}

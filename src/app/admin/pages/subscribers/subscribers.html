@@ -30,7 +30,7 @@
         </select>
 
         <div class="stats">
-            {{sub_cnt}} SUBS &nbsp;&nbsp; 
+            {{sub_cnt}} SUBS &nbsp;&nbsp;
         </div>
 
     </div>
@@ -47,7 +47,7 @@
             <span>STATUS</span>
         </div>
 
-        <div class="row" *ngFor="let s of filteredSubscribers">
+        <div class="row" *ngFor="let s of paginatedSubscribers">
 
             <span class="id">{{s.id}}</span>
             <span>{{s.name}}</span>
@@ -66,6 +66,21 @@
             </span>
 
         </div>
+
+    </div>
+    <div class="pagination">
+
+        <button (click)="prevPage()" [disabled]="subscriberPage === 1">
+            ⬅ Prev
+        </button>
+
+        <span>
+            Page {{subscriberPage}} / {{ totalPages }}
+        </span>
+
+        <button (click)="nextPage()" [disabled]="subscriberPage * pageSize >= filteredSubscribers.length">
+            Next ➡
+        </button>
 
     </div>
 
