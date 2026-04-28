@@ -19,3 +19,25 @@ export interface AuditLog {
   entityType: string;
   timestamp: string;
 }
+type Risk = 'LOW' | 'MEDIUM' | 'HIGH';
+export interface Stock {
+    id:number;
+  symbol: string;
+  sector: string;
+  price: number;
+  liquidity: number;
+  riskCategory: Risk;
+  active:boolean;
+  avgVolume:number;
+  marketCap:number;
+  category:string;
+}
+type Status = 'ACTIVE' | 'PAUSED' | 'EXITED';
+export interface Subscriber {
+  id: string;
+  name: string;
+  aum: number;
+  risk: 'Conservative' | 'Moderate' | 'Aggressive';
+  onboarded: string;
+  status: Status;
+}

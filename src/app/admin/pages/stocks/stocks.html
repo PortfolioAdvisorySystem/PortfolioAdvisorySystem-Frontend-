@@ -10,14 +10,21 @@
     <div class="filters">
 
         <div class="tabs">
-            <button [class.active]="activeTab==='ALL'" (click)="activeTab='ALL'">All Stocks</button>
-            <button [class.active]="activeTab==='ELIGIBLE'" (click)="activeTab='ELIGIBLE'">Eligible</button>
+            <button [class.active]="activeTab==='ALL'" (click)="activeTab='ALL'; applyFilters()">
+                All Stocks
+            </button>
+
+            <button [class.active]="activeTab==='ELIGIBLE'" (click)="activeTab='ELIGIBLE'; applyFilters()">
+                Eligible
+            </button>
         </div>
 
-        <input class="search" placeholder="Symbol or name..." [(ngModel)]="searchText" />
+        <!-- 🔥 FIX: trigger filter -->
+        <input class="search" placeholder="Symbol..." [(ngModel)]="searchText" (input)="applyFilters()" />
 
-        <!-- Updated sectors -->
-        <select class="dropdown" [(ngModel)]="selectedSector">
+        <!-- 🔥 FIX: trigger filter -->
+        <select class="dropdown" [(ngModel)]="selectedSector" (change)="applyFilters()">
+
             <option *ngFor="let s of sectors" [value]="s">{{s}}</option>
         </select>
 
@@ -28,28 +35,25 @@
 
         <div class="table-header">
             <span>SYMBOL</span>
-            <span>NAME</span>
             <span>SECTOR</span>
-            <span>PRICE</span>
+            <span>CATEGORY</span>
+            <span>AVG VOL</span>
             <span>LIQUIDITY</span>
             <span>RISK</span>
             <span>STATUS</span>
             <span>ACTIONS</span>
         </div>
 
-        <div class="row" *ngFor="let stock of filteredStocks">
+        <!-- 🔥 pagination list -->
+        <div class="row" *ngFor="let stock of paginatedStocks">
 
-            <!-- SYMBOL -->
             <span class="symbol">{{stock.symbol}}</span>
 
-            <!-- NAME -->
-            <span>{{stock.name}}</span>
-
-            <!-- SECTOR -->
             <span class="muted">{{stock.sector}}</span>
 
-            <!-- PRICE -->
-            <span>${{stock.price}}</span>
+            <span class="muted">{{stock.category}}</span>
+
+            <span>₹{{stock.avgVolume}}</span>
 
             <!-- LIQUIDITY -->
             <span class="liquidity">
@@ -62,57 +66,29 @@
             <!-- RISK -->
             <span>
                 <span class="badge" [ngClass]="{
-            'low': stock.risk==='LOW',
-            'medium': stock.risk==='MEDIUM',
-            'high': stock.risk==='HIGH'
-          }">
-                    {{stock.risk}}
+                    'low': stock.riskCategory==='LOW',
+                    'medium': stock.riskCategory==='MEDIUM',
+                    'high': stock.riskCategory==='HIGH'
+                }">
+                    {{stock.riskCategory}}
                 </span>
             </span>
 
             <!-- STATUS -->
-            <span>
-                <span class="badge status" [ngClass]="{
-            'active': stock.status==='ACTIVE',
-            'suspended': stock.status==='SUSPENDED',
-            'blacklisted': stock.status==='BLACKLISTED'
-          }">
-                    {{stock.status}}
-                </span>
+            <span class="badge status" [ngClass]="stock.active ? 'active' : 'suspended'">
+
+                {{ stock.active ? 'ACTIVE' : 'SUSPENDED' }}
+
             </span>
 
             <!-- ACTIONS -->
             <span class="actions">
 
-                <!-- COLUMN 1: Suspend / Activate -->
-                <span class="action-col">
+                <button [ngClass]="stock.active ? '' : 'activate'" (click)="toggleSuspend(stock)">
 
-                    <!-- ACTIVE -->
-                    <button *ngIf="stock.status==='ACTIVE'" (click)="toggleSuspend(stock)">
-                        Suspend
-                    </button>
+                    {{ stock.active ? 'Suspend' : 'Activate' }}
 
-                    <!-- SUSPENDED -->
-                    <button *ngIf="stock.status==='SUSPENDED'" class="activate" (click)="activate(stock)">
-                        Activate
-                    </button>
-
-                    <!-- BLACKLISTED -->
-                    <button *ngIf="stock.status==='BLACKLISTED'" class="activate" (click)="activate(stock)">
-                        Activate
-                    </button>
-
-                </span>
-
-                <!-- COLUMN 2: Blacklist -->
-                <span class="action-col">
-
-                    <!-- Hide if BLACKLISTED -->
-                    <button *ngIf="stock.status!=='BLACKLISTED'" class="danger" (click)="blacklist(stock)">
-                        Blacklist
-                    </button>
-
-                </span>
+                </button>
 
             </span>
 
@@ -120,4 +96,20 @@
 
     </div>
 
+    <!-- PAGINATION -->
+    <div class="pagination">
+
+        <button (click)="prevPage()" [disabled]="currentPage === 1">
+            ⬅ Prev
+        </button>
+
+        <span>
+            Page {{currentPage}} / {{ totalPages }}
+        </span>
+
+        <button (click)="nextPage()" [disabled]="currentPage * pageSize >= filteredStocks.length">
+            Next ➡
+        </button>
+
+    </div>
 </div>

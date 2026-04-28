@@ -16,10 +16,10 @@
   <div class="card">
     <h3>Allocation by strategy</h3>
 
-    <div *ngFor="let s of strategies">
+    <div *ngFor="let s of paginatedStrategies">
       <div class="row">
-        <span>{{s.name}}</span>
-        <span>{{s.value}}%</span>
+        <span>{{s.name}} </span>
+        <span style="color :rgb(69, 105, 91) "> {{s.value}}%</span>
       </div>
       <div class="bar">
         <div class="fill" [style.width]="s.value + '%'"></div>
@@ -31,85 +31,187 @@
     <h3>Allocation by subscriber</h3>
 
     <table>
-      <tr *ngFor="let s of subscribers">
+      <thead>
+    <tr>
+      <th>Subscriber</th>
+      <th>Risk Profile</th>
+      <th>AUM</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let s of paginatedSubscribers">
         <td class="highlight">{{s.id}}</td>
         <td>{{s.profile}}</td>
         <td>{{s.aum}}</td>
       </tr>
+      </tbody>
     </table>
+    <div class="pagination">
+
+      <button (click)="allocationPage = allocationPage - 1" [disabled]="allocationPage === 1">
+        Prev
+      </button>
+
+      <span>
+        Page {{allocationPage}} /
+        {{ getTotalPages(strategies) }}
+      </span>
+
+      <button (click)="allocationPage = allocationPage + 1" [disabled]="allocationPage * pageSize >= strategies.length">
+        Next
+      </button>
+
+    </div>
   </div>
+
 
 </div>
 
 <!-- ================= MIGRATION ================= -->
 <div *ngIf="activeTab==='migration'" class="card">
+  <h2>Migration History</h2>
   <table>
-    <tr *ngFor="let m of migrations">
+    <thead>
+    <tr>
+      <th>ID            </th>
+      <th>Reason</th>
+      <th>Amount Migrated</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let m of paginatedMigrations">
       <td class="highlight">{{m.id}}</td>
-      <td>{{m.sub}}</td>
-      <td>{{m.from}}</td>
-      <td>{{m.to}}</td>
+      <!-- <td>{{m.sub}}</td> -->
+      <td>{{m.details}}</td>
+
       <td>{{m.amount}}</td>
       <td>{{m.when}}</td>
     </tr>
+    </tbody>
   </table>
+  <div class="pagination">
+
+    <button (click)="migrationPage = migrationPage - 1" [disabled]="migrationPage === 1">
+      Prev
+    </button>
+
+    <span>
+      Page {{migrationPage}} /
+      {{ getTotalPages(migrations) }}
+    </span>
+
+    <button (click)="migrationPage = migrationPage + 1" [disabled]="migrationPage * pageSize >= migrations.length">
+      Next
+    </button>
+
+  </div>
 </div>
+
 
 <!-- ================= REBALANCE ================= -->
-<div *ngIf="activeTab==='rebalance'" class="grid">
+<div *ngIf="activeTab==='rebalance'" class="">
 
   <div class="card">
-    <h3>Rebalance history</h3>
+    <h2>Rebalance History</h2>
 
     <table>
-      <tr *ngFor="let r of rebalances">
-        <td class="highlight">{{r.run}}</td>
-        <td>{{r.by}}</td>
-        <td>{{r.subs}}</td>
-        <td>{{r.status}}</td>
-      </tr>
+
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Reason</th>
+          <th>Triggered By</th>
+          <th>Status</th>
+          <th>Summary</th>
+          <th>Triggered At</th>
+          <th>Completed At</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let r of paginatedRebalances">
+
+          <td class="highlight">{{r.id}}</td>
+          <td>{{r.reason}}</td>
+          <td>{{r.by}}</td>
+          <td>{{r.status}}</td>
+          <td>{{r.summary}}</td>
+          <td>{{r.triggeredAt}}</td>
+          <td>{{r.completedAt}}</td>
+
+        </tr>
+      </tbody>
+
     </table>
   </div>
-
-  <div class="card">
-    <h3>Simulate rebalance</h3>
-    <input placeholder="run id" />
-    <button>Simulate</button>
   </div>
-
-</div>
 
 <!-- ================= RISK ================= -->
 <div *ngIf="activeTab==='risk'" class="card">
 
-  <h3>Rule breach summary</h3>
+  <h2>Rule breach summary</h2>
 
-  <div *ngFor="let r of risks">
+  <div *ngFor="let r of paginatedRisks">
     <span>{{r.name}}</span>
     <div class="bar">
       <div class="fill danger" *ngIf="r.type==='danger'" [style.width]="r.value + '%'"></div>
       <div class="fill warn" *ngIf="r.type==='warn'" [style.width]="r.value + '%'"></div>
     </div>
   </div>
+  <div class="pagination">
 
+    <button (click)="riskPage = riskPage - 1" [disabled]="riskPage === 1">
+      Prev
+    </button>
+
+    <span>
+      Page {{riskPage}} /
+      {{ getTotalPages(risks) }}
+    </span>
+
+    <button (click)="riskPage = riskPage + 1" [disabled]="riskPage * pageSize >= risks.length">
+      Next
+    </button>
+
+  </div>
 </div>
 
 <!-- ================= UNALLOCATED ================= -->
 <div *ngIf="activeTab==='unallocated'" class="card">
+  <h2>Unallocated History</h2>
   <table>
-    <tr *ngFor="let u of unallocated">
+    <tr *ngFor="let u of paginatedUnallocated">
       <td class="highlight">{{u.sub}}</td>
       <td>{{u.amount}}</td>
-      <td>{{u.reason}}</td>
+      <td>{{u.allocated}}</td>
       <td>{{u.days}}</td>
     </tr>
   </table>
+  <div class="pagination">
+
+    <button (click)="unallocatedPage = unallocatedPage - 1" [disabled]="unallocatedPage === 1">
+      Prev
+    </button>
+
+    <span>
+      Page {{unallocatedPage}} /
+      {{ getTotalPages(unallocated) }}
+    </span>
+
+    <button (click)="unallocatedPage = unallocatedPage + 1"
+      [disabled]="unallocatedPage * pageSize >= unallocated.length">
+      Next
+    </button>
+
+  </div>
 </div>
 
 <!-- ================= DEALLOCATION ================= -->
 <div *ngIf="activeTab==='deallocation'" class="card">
+  <h2>Deallocation History</h2>
   <table>
-    <tr *ngFor="let d of deallocation">
+    <tr *ngFor="let d of paginatedDeallocation">
       <td class="highlight">{{d.id}}</td>
       <td>{{d.symbol}}</td>
       <td>{{d.reason}}</td>
@@ -117,4 +219,21 @@
       <td>{{d.when}}</td>
     </tr>
   </table>
+  <div class="pagination">
+
+    <button (click)="deallocationPage = deallocationPage - 1" [disabled]="deallocationPage === 1">
+      Prev
+    </button>
+
+    <span>
+      Page {{deallocationPage}} /
+      {{ getTotalPages(deallocation) }}
+    </span>
+
+    <button (click)="deallocationPage = deallocationPage + 1"
+      [disabled]="deallocationPage * pageSize >= deallocation.length">
+      Next
+    </button>
+
+  </div>
 </div>

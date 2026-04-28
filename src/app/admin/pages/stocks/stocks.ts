@@ -1,19 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-type Status = 'ACTIVE' | 'SUSPENDED' | 'BLACKLISTED';
-type Risk = 'LOW' | 'MEDIUM' | 'HIGH';
-
-interface Stock {
-  symbol: string;
-  name: string;
-  sector: string;
-  price: number;
-  liquidity: number;
-  risk: Risk;
-  status: Status;
-}
+import { Stock } from '../../../models/admin';
+import { ApiServices } from '../../../services/api-services';
 
 @Component({
   selector: 'app-stocks',
@@ -28,57 +17,162 @@ export class StocksComponent {
   selectedSector = 'ALL';
   searchText = '';
 
-  stocks: Stock[] = [
-    { symbol: 'AAPL', name: 'Apple Inc.', sector: 'Tech', price: 214, liquidity: 98, risk: 'LOW', status: 'ACTIVE' },
-    { symbol: 'MSFT', name: 'Microsoft Corp.', sector: 'Tech', price: 432, liquidity: 96, risk: 'LOW', status: 'ACTIVE' },
-    { symbol: 'NVDA', name: 'NVIDIA Corp.', sector: 'Tech', price: 129, liquidity: 99, risk: 'MEDIUM', status: 'ACTIVE' },
-    { symbol: 'JPM', name: 'JPMorgan Chase', sector: 'Financials', price: 217, liquidity: 84, risk: 'MEDIUM', status: 'ACTIVE' },
-    { symbol: 'XOM', name: 'Exxon Mobil', sector: 'Energy', price: 112, liquidity: 72, risk: 'HIGH', status: 'SUSPENDED' },
-    { symbol: 'PFE', name: 'Pfizer Inc.', sector: 'Healthcare', price: 28, liquidity: 68, risk: 'MEDIUM', status: 'ACTIVE' },
-    { symbol: 'TSLA', name: 'Tesla Inc.', sector: 'Consumer', price: 249, liquidity: 92, risk: 'HIGH', status: 'ACTIVE' },
-    { symbol: 'BA', name: 'Boeing Co.', sector: 'Industrials', price: 162, liquidity: 55, risk: 'HIGH', status: 'ACTIVE' },
-    { symbol: 'GS', name: 'Goldman Sachs', sector: 'Financials', price: 498, liquidity: 78, risk: 'MEDIUM', status: 'ACTIVE' },
-    { symbol: 'META', name: 'Meta Platforms', sector: 'Tech', price: 512, liquidity: 95, risk: 'MEDIUM', status: 'ACTIVE' },
+  stocks: Stock[] = [];
+  filteredStocks: Stock[] = [];   // ✅ FIX (missing)
+
+  currentPage = 1;
+  pageSize = 10;
+  paginatedStocks: Stock[] = [];
+
+  constructor(private apiService: ApiServices, private cdr: ChangeDetectorRef) { }
+
+  sectors: string[] = [
+    'ALL',
+    'Tech',
+    'Financials',
+    'Energy',
+    'Healthcare',
+    'Consumer',
+    'Industrials'
   ];
 
-  sectors = ['ALL', 'Tech', 'Financials', 'Energy', 'Healthcare', 'Consumer', 'Industrials'];
-
-  // ---------------- ACTIONS ----------------
-
-  toggleSuspend(stock: Stock) {
-    stock.status = stock.status === 'ACTIVE' ? 'SUSPENDED' : 'ACTIVE';
+  ngOnInit() {
+    this.loadStocks();
   }
+
+  loadStocks() {
+    this.apiService.getStocks().subscribe({
+      next: (data: any[]) => {
+        this.stocks = data.map(stock => ({
+          id:stock.id,
+          symbol: stock.symbol,
+          sector: this.capitalize(stock.sector ?? 'UNKNOWN'),
+          price: stock.price ?? 0,
+          liquidity: stock.liquidityScore ?? stock.liquidity ?? 0,
+          riskCategory: stock.riskCategory ?? stock.risk ?? 'LOW',
+          active: stock.active ?? false,
+          avgVolume: stock.avgVolume ?? 0,
+          marketCap: stock.marketCap ?? 0,
+          category: stock.category ?? ''
+        }));
+
+        this.applyFilters();
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching stocks', err);
+      }
+    });
+  }
+
+
+ toggleSuspend(stock: Stock) {
+
+  if (stock.active) {
+    this.apiService.suspendStock(stock.id).subscribe({
+      next: () => {
+        stock.active = false;
+      },
+      error: (err) => {
+        console.error('Suspend failed', err);
+        alert('Failed to suspend stock');
+      }
+    });
+
+  } else {
+    this.apiService.activateStock(stock.id).subscribe({
+      next: () => {
+        stock.active = true;
+      },
+      error: (err) => {
+        console.error('Activate failed', err);
+        alert('Failed to activate stock');
+      }
+    });
+  }
+
+}
 
   activate(stock: Stock) {
-    stock.status = 'ACTIVE';
-  }
 
-  blacklist(stock: Stock) {
-    stock.status = 'BLACKLISTED';
-  }
+  this.apiService.activateStock(stock.id).subscribe({
+    next: () => {
+      stock.active = true;
+    },
+    error: (err) => {
+      console.error('Activate failed', err);
+      alert('Failed to activate stock');
+    }
+  });
 
-  // ---------------- FILTER ----------------
+}
 
-  get filteredStocks() {
-    return this.stocks.filter(stock => {
+//   blacklist(stock: Stock) {
 
-      // 🔹 Tab filter (IMPORTANT)
+//   this.apiService.blacklistStock(stock.id).subscribe({
+//     next: () => {
+//       stock.active = false;
+//       this.applyFilters();
+//     },
+//     error: (err) => {
+//       console.error('Blacklist failed', err);
+//       alert('Failed to blacklist stock');
+//     }
+//   });
+// }
+
+
+  applyFilters() {
+    this.filteredStocks = this.stocks.filter(stock => {
+
       const tabMatch =
         this.activeTab === 'ALL' ||
-        (this.activeTab === 'ELIGIBLE' && stock.status === 'ACTIVE');
+        (this.activeTab === 'ELIGIBLE' && stock.active);
 
-      // 🔹 Sector filter
       const sectorMatch =
         this.selectedSector === 'ALL' ||
         stock.sector === this.selectedSector;
 
-      // 🔹 Search filter
       const search = this.searchText.toLowerCase();
+
       const searchMatch =
-        stock.symbol.toLowerCase().includes(search) ||
-        stock.name.toLowerCase().includes(search);
+        String(stock.symbol ?? '').toLowerCase().includes(search);
 
       return tabMatch && sectorMatch && searchMatch;
     });
+
+    this.currentPage = 1;
+    this.updatePagination();
+    this.cdr.detectChanges(); 
+  }
+
+
+  updatePagination() {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+
+    this.paginatedStocks = this.filteredStocks.slice(start, end);
+  }
+
+  nextPage() {
+    if (this.currentPage * this.pageSize < this.filteredStocks.length) {
+      this.currentPage++;
+      this.updatePagination();
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
+    }
+  }
+
+
+  capitalize(value: string): string {
+    return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
+  }
+  get totalPages(): number {
+    return Math.ceil(this.filteredStocks.length / this.pageSize) || 1;
   }
 }

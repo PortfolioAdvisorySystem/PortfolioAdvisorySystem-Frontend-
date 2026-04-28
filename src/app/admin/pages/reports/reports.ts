@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { ApiServices } from '../../../services/api-services';
 @Component({
   selector: 'app-reports',
   standalone: true,
@@ -11,47 +11,159 @@ import { CommonModule } from '@angular/common';
 export class ReportsComponent {
 
   activeTab: string = 'allocation';
+pageSize = 10;
 
-  setTab(tab: string) {
-    this.activeTab = tab;
-  }
+// separate page tracking
+allocationPage = 1;
+migrationPage = 1;
+rebalancePage = 1;
+riskPage = 1;
+unallocatedPage = 1;
+deallocationPage = 1;
+ setTab(tab: string) {
+  this.activeTab = tab;
+
+  // reset pages
+  this.allocationPage = 1;
+  this.migrationPage = 1;
+  this.rebalancePage = 1;
+  this.riskPage = 1;
+  this.unallocatedPage = 1;
+  this.deallocationPage = 1;
+}
+strategies: any[] = [];
+subscribers: any[] = [];
+migrations: any[] = [];
+rebalances: any[] = [];
+risks: any[] = [];
+unallocated: any[] = [];
+deallocation: any[] = [];
 
 
-  strategies = [
-    { name: 'Conservative', value: 42 },
-    { name: 'Moderate', value: 78 },
-    { name: 'Aggressive', value: 56 },
-    { name: 'Income', value: 31 },
-    { name: 'Growth', value: 64 }
-  ];
+constructor(private apiService: ApiServices,private cdr:ChangeDetectorRef) {}
+ngOnInit() {
+  this.loadReports();
 
-  subscribers = [
-    { id: 'SUB-223', profile: 'Aggressive', aum: '$3,408,153' },
-    { id: 'SUB-222', profile: 'Moderate', aum: '$3,270,842' },
-    { id: 'SUB-221', profile: 'Conservative', aum: '$3,133,531' }
-  ];
+}
+loadReports() {
 
-  migrations = [
-    { id: 'MIG-700', sub: 'SUB-200', from: 'Conservative', to: 'Moderate', amount: '$50,000', when: '2h ago' },
-    { id: 'MIG-699', sub: 'SUB-201', from: 'Moderate', to: 'Aggressive', amount: '$123,211', when: '20h ago' }
-  ];
+  // 🔹 Strategy Report
+  this.apiService.getStrategyReport().subscribe(data => {
+    this.strategies = (data || []).map(s => ({
+      name: s.strategyName,
+      value: s.percentage
+    }));
+    this.allocationPage = 1;
+        this.cdr.detectChanges();
 
-  rebalances = [
-    { run: 'run_834', by: 'system', subs: 80, status: 'RUNNING' },
-    { run: 'run_833', by: 'alice', subs: 117, status: 'COMPLETED' }
-  ];
+  });
 
-  risks = [
-    { name: 'Sector cap', value: 40, type: 'warn' },
-    { name: 'Concentration', value: 100, type: 'danger' },
-    { name: 'Liquidity', value: 20, type: 'warn' }
-  ];
+  // 🔹 Subscribers
+  this.apiService.getSubscriberReport().subscribe(data => {
+    this.subscribers = (data || []).map(s => ({
+      id: s.subscriberId,
+      profile: this.formatRisk(s.riskProfile),
+      aum: this.formatCurrency(s.aum)
+    }));
+  });
 
-  unallocated = [
-    { sub: 'SUB-204', amount: '$320,000', reason: 'KYC refresh', days: '3d' }
-  ];
+  // 🔹 Migrations
+  this.apiService.getMigrationReport().subscribe(data => {
+    this.migrations = (data || []).map(m => ({
+      id: m.id,
+      sub: m.subscriberId,
+      details: m.migrationReason,
+      amount: this.formatCurrency(m.amountShifted),
+      when: m.timeAgo || 'recent'
+    }));
+  });
 
-  deallocation = [
-    { id: 'DQ-1', symbol: 'XOM', reason: 'Suspended', amount: '$1,240,000', when: 'just now' }
-  ];
+  // 🔹 Rebalances
+  this.apiService.getRebalanceReport().subscribe(data => {
+  this.rebalances = (data || []).map(r => ({
+    id: r.id,
+    reason: r.triggerReason,
+    by: r.triggeredBy,
+    status: r.status,
+    summary: r.summary,
+    triggeredAt: this.formatDate(r.triggeredAt),
+    completedAt: this.formatDate(r.completedAt)
+  }));
+});
+
+
+  // 🔹 Risks
+  this.apiService.getRiskReport().subscribe(data => {
+    this.risks = (data || []).map(r => ({
+      name: r.ruleName,
+      value: r.percent,
+      type: r.severity
+    }));
+  });
+
+  // 🔹 Unallocated
+  this.apiService.getUnallocatedReport().subscribe(data => {
+    this.unallocated = (data || []).map(u => ({
+      sub: "SUB " + u.subscriberId,
+      amount: this.formatCurrency(u.unallocatedAmount),
+      allocated: this.formatCurrency(u.allocatedAmount)
+    }));
+  });
+
+  // 🔹 Deallocation
+  this.apiService.getDeallocationReport().subscribe(data => {
+    this.deallocation = (data || []).map(d => ({
+      id: d.id,
+      symbol: d.stockSymbol,
+      reason: d.reason,
+      amount: this.formatCurrency(d.amount),
+      when: d.timeAgo || 'recent'
+    }));
+  });
+}
+formatRisk(risk: string): string {
+  return risk?.charAt(0).toUpperCase() + risk?.slice(1).toLowerCase();
+}
+
+formatCurrency(value: number): string {
+  return '₹' + (value || 0).toLocaleString();
+}
+get paginatedStrategies() {
+  return this.paginate(this.strategies, this.allocationPage);
+}
+
+get paginatedSubscribers() {
+  return this.paginate(this.subscribers, this.allocationPage);
+}
+
+get paginatedMigrations() {
+  return this.paginate(this.migrations, this.migrationPage);
+}
+
+get paginatedRebalances() {
+  return this.paginate(this.rebalances, this.rebalancePage);
+}
+
+get paginatedRisks() {
+  return this.paginate(this.risks, this.riskPage);
+}
+
+get paginatedUnallocated() {
+  return this.paginate(this.unallocated, this.unallocatedPage);
+}
+
+get paginatedDeallocation() {
+  return this.paginate(this.deallocation, this.deallocationPage);
+}
+formatDate(date: string): string {
+  return new Date(date).toLocaleString();
+}
+paginate(data: any[], page: number) {
+  const start = (page - 1) * this.pageSize;
+  return data.slice(start, start + this.pageSize);
+}
+
+getTotalPages(data: any[]) {
+  return Math.ceil(data.length / this.pageSize) || 1;
+}
 }

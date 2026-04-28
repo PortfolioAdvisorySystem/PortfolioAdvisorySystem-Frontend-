@@ -1,17 +1,8 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-type Status = 'ACTIVE' | 'PAUSED' | 'EXITED';
-
-interface Subscriber {
-  id: string;
-  name: string;
-  aum: number;
-  risk: 'Conservative' | 'Moderate' | 'Aggressive';
-  onboarded: string;
-  status: Status;
-}
+import { ApiServices } from '../../../services/api-services';
+import { Subscriber } from '../../../models/admin';
 
 @Component({
   selector: 'app-subscriber',
@@ -26,26 +17,46 @@ export class SubscribersComponent {
   selectedStatus = 'ALL';
   selectedRisk = 'ALL';
   isOnboardOpen = false;
+  sub_cnt=0;
+  subscribers: Subscriber[] = [];
 
   newSubscriber: any = this.getEmptySubscriber();
 
-  subscribers: Subscriber[] = [
-    { id: 'SUB-200', name: 'Ridgeview Capital #1', aum: 250000, risk: 'Conservative', onboarded: '3h ago', status: 'ACTIVE' },
-    { id: 'SUB-201', name: 'Northwind Family Office #2', aum: 387311, risk: 'Moderate', onboarded: '11d ago', status: 'ACTIVE' },
-    { id: 'SUB-202', name: 'Helix Pensions #3', aum: 524622, risk: 'Aggressive', onboarded: '22d ago', status: 'ACTIVE' },
-    { id: 'SUB-203', name: 'Atlas Endowment #4', aum: 661933, risk: 'Conservative', onboarded: '33d ago', status: 'ACTIVE' },
-    { id: 'SUB-204', name: 'Beacon Trust #5', aum: 799244, risk: 'Moderate', onboarded: '44d ago', status: 'PAUSED' },
-    { id: 'SUB-205', name: 'Coastline Wealth #6', aum: 936555, risk: 'Aggressive', onboarded: '55d ago', status: 'EXITED' },
-    { id: 'SUB-206', name: 'Ridgeview Capital #7', aum: 1073866, risk: 'Conservative', onboarded: '66d ago', status: 'ACTIVE' },
-    { id: 'SUB-207', name: 'Northwind Family Office #8', aum: 1211177, risk: 'Moderate', onboarded: '77d ago', status: 'ACTIVE' },
-    { id: 'SUB-208', name: 'Helix Pensions #9', aum: 1348488, risk: 'Aggressive', onboarded: '88d ago', status: 'ACTIVE' },
-    { id: 'SUB-209', name: 'Atlas Endowment #10', aum: 1485799, risk: 'Conservative', onboarded: '99d ago', status: 'ACTIVE' },
-    { id: 'SUB-210', name: 'Beacon Trust #11', aum: 1623110, risk: 'Moderate', onboarded: '110d ago', status: 'PAUSED' },
-    { id: 'SUB-211', name: 'Coastline Wealth #12', aum: 1760421, risk: 'Aggressive', onboarded: '121d ago', status: 'EXITED' },
-  ];
+  constructor(private apiService: ApiServices,private cdr:ChangeDetectorRef) {}
+
+  ngOnInit() {
+    this.loadSubscribers();
+  }
+
+  loadSubscribers() {
+    this.apiService.getSubscribers().subscribe({
+      next: (data: any[]) => {
+        this.sub_cnt=data.length;
+        this.subscribers = data.map(s => ({
+          id: s.subscriberId,
+          name: s.name,
+          aum: s.aum,
+          risk: this.formatRisk(s.riskProfile),
+
+          status: s.status,
+          onboarded: 'Recently'
+        }));
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error fetching subscribers', err);
+      }
+    });
+  }
+
+  formatRisk(risk: string): any {
+    return risk.charAt(0).toUpperCase() + risk.slice(1).toLowerCase();
+  }
+
 
   get filteredSubscribers() {
     return this.subscribers.filter(s => {
+
       const search = this.searchText.toLowerCase();
 
       const searchMatch =
@@ -63,7 +74,6 @@ export class SubscribersComponent {
       return searchMatch && statusMatch && riskMatch;
     });
   }
-
 
 
   openOnboardModal() {

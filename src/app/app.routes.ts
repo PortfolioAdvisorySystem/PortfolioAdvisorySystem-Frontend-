@@ -16,7 +16,7 @@ import { Rules} from './admin/pages/rules/rules';
 import { StocksComponent } from './admin/pages/stocks/stocks';
 import { WorkflowComponent } from './admin/pages/workflow/workflow';
 import { SubscribersComponent } from './admin/pages/subscribers/subscribers';
-// import { StrategiesComponent } from './admin/pages/strategies/strategies';
+ import { StrategiesComponent } from './admin/pages/strategies/strategies';
  import { ReportsComponent } from './admin/pages/reports/reports';
 import { AuditLogs } from './admin/pages/audit-logs/audit-logs';
 
@@ -41,10 +41,9 @@ export const routes: Routes = [
       { path: 'stocks', component: StocksComponent },
       { path: 'workflow', component: WorkflowComponent },
       { path: 'subscribers', component: SubscribersComponent },
-      // { path: 'strategies', component: StrategiesComponent },
+       { path: 'strategies', component: StrategiesComponent },
        { path: 'reports', component: ReportsComponent },
       { path: 'audit-logs', component: AuditLogs },
-
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     
     ]

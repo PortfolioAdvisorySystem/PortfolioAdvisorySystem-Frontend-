@@ -30,7 +30,7 @@
         </select>
 
         <div class="stats">
-            24 / 24 SUBS &nbsp;&nbsp; 
+            {{sub_cnt}} SUBS &nbsp;&nbsp; 
         </div>
 
     </div>
@@ -51,7 +51,7 @@
 
             <span class="id">{{s.id}}</span>
             <span>{{s.name}}</span>
-            <span>${{s.aum | number}}</span>
+            <span>₹{{s.aum | number}}</span>
             <span class="muted">{{s.risk}}</span>
             <span class="muted">{{s.onboarded}}</span>
 

@@ -35,8 +35,7 @@
             </div>
 
             <div class="card-body">
-                <h2 class="value">1,284</h2>
-                <span class="change">↗ +24 this wk</span>
+                <h2 class="value">{{dashboard.totalSubscribers}}</h2>
             </div>
 
         </div>
@@ -56,7 +55,7 @@
                 </svg>
             </div>
 
-            <h2 class="value yellow">4</h2>
+            <h2 class="value yellow">{{dashboard.activeRules}}</h2>
 
         </div>
 
@@ -75,7 +74,7 @@
             </div>
 
             <div class="card-body">
-                <h2 class="value green">8</h2>
+                <h2 class="value green">{{dashboard.eligibleStocks}}</h2>
             </div>
 
         </div>
@@ -95,8 +94,7 @@
                 </svg>
             </div>
 
-            <h2 class="value red">3</h2>
-
+            <h2 class="value red">{{dashboard.pendingApprovals}}</h2>
         </div>
 
     </div>
@@ -129,24 +127,21 @@
                     </div>
 
                     <div class="bars">
-                        <div class="bar-group">
-                            <div class="bar yellow" style="height: 45%">
-                                <div class="tooltip">Conservative: 42</div>
+
+                        <div class="bar-group" *ngFor="let s of strategies;let i = index">
+
+                            <div class="bar" [ngClass]="'bar-' + i" [style.height.%]="max > 0 ? (s.value / max) * 100 : 0">
+
+                                <div class="tooltip">
+                                    {{s.name}}: {{s.value}}
+                                </div>
+
                             </div>
-                            <span>Conservative</span>
+
+                            <span>{{s.name}}</span>
+
                         </div>
-                        <div class="bar-group">
-                            <div class="bar green" style="height: 85%">
-                                <div class="tooltip">Moderate: 82</div>
-                            </div>
-                            <span>Moderate</span>
-                        </div>
-                        <div class="bar-group">
-                            <div class="bar blue" style="height: 60%">
-                                <div class="tooltip">Aggressive: 60</div>
-                            </div>
-                            <span>Aggressive</span>
-                        </div>
+
                     </div>
                 </div>
             </div>

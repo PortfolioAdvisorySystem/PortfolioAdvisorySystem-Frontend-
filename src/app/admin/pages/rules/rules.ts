@@ -85,8 +85,6 @@ export class Rules {
   }
 
   addRule() {
-
-    // VALIDATION CHECK
     if (
       !this.newRule.name ||
       !this.newRule.type ||
@@ -97,8 +95,7 @@ export class Rules {
       this.formError = 'All fields are required';
       return;
     }
-
-    //  CLEAR ERROR
+    
     this.formError = '';
 
     const newId = 'R-' + (1000 + this.rules.length + 1);
@@ -128,4 +125,8 @@ export class Rules {
 
     this.applyFilters();
   }
+  clearError() {
+  console.log('Clearing errors');
+
+}
 }
