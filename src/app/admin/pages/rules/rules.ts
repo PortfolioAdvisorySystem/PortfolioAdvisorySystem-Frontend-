@@ -40,23 +40,25 @@ export class Rules {
   }
 
   applyFilters() {
-    this.filteredRules = this.rules.filter(rule => {
 
-      const search = this.searchTerm.toLowerCase();
+  this.filteredRules = this.rules.filter(rule => {
 
-      const matchesSearch =
-        String(rule.id).toLowerCase().includes(search) ||
-        rule.name.toLowerCase().includes(search) ||
-        rule.type.toLowerCase().includes(search);
+    const search = this.searchTerm.toLowerCase();
 
-      const matchesStatus =
-        this.selectedStatus === 'ALL' ||
-        (this.selectedStatus === 'ACTIVE' && rule.active) ||
-        (this.selectedStatus === 'INACTIVE' && !rule.active);
+    const matchesSearch =
+      String(rule.id).toLowerCase().includes(search) ||
+      (rule.name || '').toLowerCase().includes(search) ||
+      (rule.ruleType || '').toLowerCase().includes(search);
 
-      return matchesSearch && matchesStatus;
-    });
-  }
+    const matchesStatus =
+      this.selectedStatus === 'ALL' ||
+      (this.selectedStatus === 'ACTIVE' && rule.active) ||
+      (this.selectedStatus === 'INACTIVE' && !rule.active);
+
+    return matchesSearch && matchesStatus;
+  });
+
+}
 
   isModalOpen = false;
 
@@ -72,60 +74,115 @@ export class Rules {
     this.newRule = this.getEmptyRule();
   }
 
-  getEmptyRule() {
-    return {
-      name: '',
-      type: 'SECTOR_CAP',
-      threshold: '',
-      priority: '',
-      effectiveDate: '',
-      expiry: '',
-      active: false
-    };
+getEmptyRule() {
+  return {
+    name: '',
+    ruleType: 'SECTOR_CAP',  
+    threshold: '',
+    targetStockSymbol: '',
+    targetSector: '',
+    targetRiskProfile: '',
+    effectiveDate: '',
+    expiryDate: '',
+    priority: '',
+    description: ''
+  };
+}
+
+addRule() {
+
+  if (
+    !this.newRule.name ||
+    !this.newRule.ruleType ||
+    !this.newRule.priority ||
+    !this.newRule.effectiveDate
+  ) {
+    this.formError = 'All required fields must be filled';
+    return;
   }
 
-  addRule() {
-    if (
-      !this.newRule.name ||
-      !this.newRule.type ||
-      !this.newRule.threshold ||
-      !this.newRule.priority ||
-      !this.newRule.effective
-    ) {
-      this.formError = 'All fields are required';
-      return;
+  const payload = {
+  name: this.newRule.name,
+  ruleType: this.newRule.ruleType,
+
+  threshold: this.newRule.threshold
+    ? Number(this.newRule.threshold)
+    : null,
+
+  targetStockSymbol: this.newRule.targetStockSymbol?.trim() || null,
+  targetSector: this.newRule.targetSector?.trim() || null,
+  targetRiskProfile: this.newRule.targetRiskProfile?.trim() || null,
+
+  effectiveDate: this.newRule.effectiveDate,
+
+  expiryDate: this.newRule.expiryDate || null,
+
+  priority: Number(this.newRule.priority),
+
+  description: this.newRule.description?.trim() || null
+};
+
+  //console.log("PAYLOAD:", payload); 
+
+  this.apiService.createRule(payload).subscribe({
+    next: (savedRule: any) => {
+
+      const mappedRule: Rule = {
+        id: savedRule.id,
+        name: savedRule.name,
+        type: savedRule.ruleType,
+        threshold: savedRule.threshold + '%',
+        priority: 'P' + savedRule.priority,
+        effectiveDate: savedRule.effectiveDate,
+        status: savedRule.active ? 'ACTIVE' : 'INACTIVE',
+        ruleType: savedRule.ruleType,
+        active: savedRule.active
+      };
+
+      this.rules.unshift(mappedRule);
+      this.applyFilters();
+      this.closeModal();
+    },
+    error: (err) => {
+      console.error('Create rule failed', err);
+      this.formError = 'Backend validation failed';
     }
-    
-    this.formError = '';
-
-    const newId = 'R-' + (1000 + this.rules.length + 1);
-
-    const ruleToAdd: Rule = {
-      id: newId,
-      name: this.newRule.name,
-      type: this.newRule.type,
-      threshold: this.newRule.threshold + '%',
-      priority: 'P' + this.newRule.priority,
-      effectiveDate: this.newRule.effectiveDate,
-      status: 'ACTIVE', 
-      ruleType: this.newRule.type,
-      active: true
-    };
-
-    this.rules.unshift(ruleToAdd);
-
-    this.applyFilters(); 
-
-    this.closeModal();
-  }
+  });
+}
 
   toggleStatus(rule: Rule) {
-    rule.active = !rule.active;
-    rule.status = rule.active ? 'ACTIVE' : 'INACTIVE';
 
-    this.applyFilters();
+  if (rule.active) {
+    this.apiService.deactivateRule(rule.id).subscribe({
+      next: () => {
+        rule.active = false;
+        rule.status = 'INACTIVE';
+        this.applyFilters();
+      },
+      error: (err) => {
+        console.error('Deactivate failed', err);
+        alert('Failed to deactivate rule');
+      }
+    });
+
+  } else {
+    
+    this.apiService.activateRule(rule.id).subscribe({
+      next: () => {
+        rule.active = true;
+        rule.status = 'ACTIVE';
+        this.applyFilters();
+      },
+      error: (err) => {
+        console.error('Activate failed', err);
+        alert('Failed to activate rule');
+      }
+    });
   }
+
+}
   clearError() {
+
   console.log('Clearing errors');
 
 }

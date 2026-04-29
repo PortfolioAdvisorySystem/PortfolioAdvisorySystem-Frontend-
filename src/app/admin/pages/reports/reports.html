@@ -48,16 +48,16 @@
     </table>
     <div class="pagination">
 
-      <button (click)="allocationPage = allocationPage - 1" [disabled]="allocationPage === 1">
+      <button (click)="subscriberPage = subscriberPage - 1" [disabled]="subscriberPage === 1">
         Prev
       </button>
 
       <span>
-        Page {{allocationPage}} /
-        {{ getTotalPages(strategies) }}
+        Page {{subscriberPage}} of 
+        {{ getTotalPages(subscribers) }}
       </span>
 
-      <button (click)="allocationPage = allocationPage + 1" [disabled]="allocationPage * pageSize >= strategies.length">
+      <button (click)="subscriberPage = subscriberPage + 1" [disabled]="subscriberPage * pageSize >= subscribers.length">
         Next
       </button>
 
@@ -97,7 +97,7 @@
     </button>
 
     <span>
-      Page {{migrationPage}} /
+      Page {{migrationPage}} of
       {{ getTotalPages(migrations) }}
     </span>
 
@@ -145,6 +145,26 @@
 
     </table>
   </div>
+  <div class="pagination">
+
+  <button 
+    (click)="rebalancePage = rebalancePage - 1"
+    [disabled]="rebalancePage === 1">
+    ⬅ Prev
+  </button>
+
+  <span>
+    Page {{rebalancePage}} of 
+    {{ getTotalPages(rebalances) }}
+  </span>
+
+  <button 
+    (click)="rebalancePage = rebalancePage + 1"
+    [disabled]="rebalancePage * pageSize >= rebalances.length">
+    Next ➡
+  </button>
+
+</div>
   </div>
 
 <!-- ================= RISK ================= -->
@@ -166,7 +186,7 @@
     </button>
 
     <span>
-      Page {{riskPage}} /
+      Page {{riskPage}}  of 
       {{ getTotalPages(risks) }}
     </span>
 
@@ -195,7 +215,7 @@
     </button>
 
     <span>
-      Page {{unallocatedPage}} /
+      Page {{unallocatedPage}} of 
       {{ getTotalPages(unallocated) }}
     </span>
 
@@ -226,7 +246,7 @@
     </button>
 
     <span>
-      Page {{deallocationPage}} /
+      Page {{deallocationPage}} of 
       {{ getTotalPages(deallocation) }}
     </span>
 

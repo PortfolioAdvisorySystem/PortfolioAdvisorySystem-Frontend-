@@ -16,20 +16,13 @@
     <div class="filters">
         <div class="filter-search">
             <span>🔍</span>
-            <input
-                placeholder="Filter by ID, name, type..."
-                [(ngModel)]="searchTerm"
-                (input)="applyFilters()" />
+            <input placeholder="Filter by ID, name, type..." [(ngModel)]="searchTerm" (input)="applyFilters()" />
         </div>
 
-        <select class="dropdown"
-                [(ngModel)]="selectedStatus"
-                (change)="applyFilters()">
-
+        <select class="dropdown" [(ngModel)]="selectedStatus" (change)="applyFilters()">
             <option value="ALL">All statuses</option>
             <option value="ACTIVE">Active</option>
             <option value="INACTIVE">Inactive</option>
-
         </select>
 
         <span class="rule-count">
@@ -40,7 +33,6 @@
     <!-- TABLE -->
     <div class="table">
 
-        <!-- HEADER -->
         <div class="table-header">
             <span>RULE ID</span>
             <span>NAME</span>
@@ -52,32 +44,26 @@
             <span>ACTIONS</span>
         </div>
 
-        <!-- ROWS -->
         <div class="row" *ngFor="let rule of filteredRules">
 
-            <span class="rule-id">{{rule.id}}</span>
+            <span class="rule-id">R-{{rule.id}}</span>
 
             <span>{{rule.name}}</span>
 
-            <!-- ✅ FIX: use type -->
             <span class="muted">{{rule.ruleType}}</span>
 
-            <span>{{rule.threshold}}</span>
+            <span>{{rule.threshold}}%</span>
 
-            <span>{{rule.priority}}</span>
+            <span>P{{rule.priority}}</span>
 
-            <!-- ✅ FIX: use effective -->
             <span class="muted">{{rule.effectiveDate}}</span>
 
-            <!-- ✅ FIX: use active -->
             <span>
-                <span class="status"
-                      [ngClass]="rule.active ? 'active' : 'inactive'">
+                <span class="status" [ngClass]="rule.active ? 'active' : 'inactive'">
                     ● {{ rule.active ? 'ACTIVE' : 'INACTIVE' }}
                 </span>
             </span>
 
-            <!-- ✅ FIX: use active -->
             <span>
                 <span class="action"
                       [ngClass]="rule.active ? 'red' : 'green'"
@@ -97,7 +83,6 @@
 
     <div class="modal">
 
-        <!-- HEADER -->
         <div class="modal-header">
             <h2>Create allocation rule</h2>
             <span class="close" (click)="closeModal()">✕</span>
@@ -107,19 +92,22 @@
             Submitted for maker-checker approval before activation.
         </p>
 
+        <!-- ERROR -->
+        <p class="error-text" *ngIf="formError">{{formError}}</p>
+
         <!-- FORM -->
         <div class="form">
 
             <!-- NAME -->
             <div class="form-group full">
-                <label>NAME</label>
-                <input [(ngModel)]="newRule.name" (input)="clearError()" placeholder="e.g. Tech sector cap">
+                <label>NAME *</label>
+                <input [(ngModel)]="newRule.name" (input)="clearError()" />
             </div>
 
-            <!-- TYPE -->
+            <!-- RULE TYPE -->
             <div class="form-group">
-                <label>TYPE</label>
-                <select [(ngModel)]="newRule.type" (change)="clearError()">
+                <label>RULE TYPE *</label>
+                <select [(ngModel)]="newRule.ruleType" (change)="clearError()">
                     <option value="SECTOR_CAP">SECTOR_CAP</option>
                     <option value="CONCENTRATION">CONCENTRATION</option>
                     <option value="LIQUIDITY">LIQUIDITY</option>
@@ -131,30 +119,52 @@
             <!-- THRESHOLD -->
             <div class="form-group">
                 <label>THRESHOLD (%)</label>
-                <input type="number" [(ngModel)]="newRule.threshold" (input)="clearError()">
+                <input type="number" [(ngModel)]="newRule.threshold" />
             </div>
 
             <!-- PRIORITY -->
             <div class="form-group">
-                <label>PRIORITY</label>
-                <input type="number" [(ngModel)]="newRule.priority" (input)="clearError()">
+                <label>PRIORITY *</label>
+                <input type="number" [(ngModel)]="newRule.priority" (input)="clearError()" />
+            </div>
+
+            <!-- TARGET SECTOR -->
+            <div class="form-group">
+                <label>SECTOR</label>
+                <input [(ngModel)]="newRule.targetSector" placeholder="e.g. Tech" />
+            </div>
+
+            <!-- TARGET STOCK -->
+            <div class="form-group">
+                <label>STOCK SYMBOL</label>
+                <input [(ngModel)]="newRule.targetStockSymbol" placeholder="e.g. AAPL" />
+            </div>
+
+            <!-- RISK PROFILE -->
+            <div class="form-group">
+                <label>RISK PROFILE</label>
+                <input [(ngModel)]="newRule.targetRiskProfile" placeholder="e.g. Moderate" />
             </div>
 
             <!-- EFFECTIVE -->
             <div class="form-group">
-                <label>EFFECTIVE</label>
-                <input type="date" [(ngModel)]="newRule.effective" (change)="clearError()">
+                <label>EFFECTIVE DATE *</label>
+                <input type="date" [(ngModel)]="newRule.effectiveDate" (change)="clearError()" />
             </div>
 
             <!-- EXPIRY -->
+            <div class="form-group">
+                <label>EXPIRY DATE</label>
+                <input type="date" [(ngModel)]="newRule.expiryDate" />
+            </div>
+
+            <!-- DESCRIPTION -->
             <div class="form-group full">
-                <label>EXPIRY (OPTIONAL)</label>
-                <input type="date" [(ngModel)]="newRule.expiry" (change)="clearError()">
+                <label>DESCRIPTION</label>
+                <input [(ngModel)]="newRule.description" />
             </div>
 
         </div>
-
-
 
         <!-- ACTION -->
         <div class="modal-footer">
@@ -164,4 +174,5 @@
         </div>
 
     </div>
+
 </div>

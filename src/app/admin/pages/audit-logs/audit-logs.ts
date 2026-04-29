@@ -21,13 +21,14 @@ export class AuditLogs {
   selectedAction = '';
   currentPage = 1;
   pageSize = 10;
-
+  totalPages=1;
   paginatedLogs: any[] = [];
   constructor(private apiService: ApiServices, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.apiService.getAuditLogs().subscribe({
       next: (data: any[]) => {
+        this.totalPages=Math.ceil((data?.length || 0) / this.pageSize);
         this.logs = data.map(log => ({
           id: 'LOG-' + log.id,
           entity: log.entityType,
