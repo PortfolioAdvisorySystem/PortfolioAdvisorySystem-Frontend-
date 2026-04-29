@@ -19,7 +19,7 @@ export class PortfolioService {
   // ── Get subscriberId from localStorage ───────────────────────────────────
   private getSubscriberId(): string | null {
    // const id = localStorage.getItem('subscriberId');
-    const id="12";
+    const id="1";
     if (!id) console.error('[PortfolioService] No subscriberId in localStorage');
     return id;
   }

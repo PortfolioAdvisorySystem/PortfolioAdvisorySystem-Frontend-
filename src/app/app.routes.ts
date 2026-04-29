@@ -8,6 +8,7 @@ import { QuestionnaireComponent } from './questionnaire/questionnaire';
 import { Loading } from './loading/loading';
 import { ResultComponent } from './result/result';
 import { HomeComponent } from './home/home';
+import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard';
 
 // Admin components
 import { AdminLayoutComponent } from './admin/layout/admin-layout/admin-layout';
@@ -26,6 +27,7 @@ export const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'home', component: HomeComponent },
   { path: 'portfolio', component: DashboardComponent },
+  { path: 'profile', component: ProfileDashboardComponent },
   { path: 'allocations', component: AllocationsComponent },
   { path: 'questions', component: QuestionnaireComponent },
   { path: 'loading', component: Loading },
