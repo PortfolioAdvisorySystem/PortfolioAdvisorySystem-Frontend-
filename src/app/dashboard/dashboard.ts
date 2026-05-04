@@ -7,9 +7,6 @@ import { CommonModule } from '@angular/common';
 import { Chart, registerables } from 'chart.js';
 import { PortfolioService } from '../services/portfolio';
 import { PortfolioDashboard } from '../models/portfolio';
-
-// ── Import your sidebar and navbar ────────────────────────────────────────────
-// Update paths if your folder structure is different
 import { Sidebar } from '../sidebar/sidebar';
 import { NavbarComponent }  from '../navbar/navbar';
 

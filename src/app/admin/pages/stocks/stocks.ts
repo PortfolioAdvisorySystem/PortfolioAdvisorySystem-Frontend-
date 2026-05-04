@@ -28,8 +28,8 @@ export class StocksComponent {
 
   sectors: string[] = [
     'ALL',
-    'Tech',
-    'Financials',
+    'Technology',
+    'Finance',
     'Energy',
     'Healthcare',
     'Consumer',

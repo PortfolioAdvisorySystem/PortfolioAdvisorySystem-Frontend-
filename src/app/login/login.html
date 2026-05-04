@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="card">
+    
+    <h1>Sign in to your account</h1>
+    <p class="subtitle">Enter your credentials to continue</p>
+
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
+      <div class="input-group">
+        <label>Email</label>
+        <input 
+          type="email"
+          name="email"
+          ngModel
+          required
+          email
+          #email="ngModel"
+          placeholder="jane@example.com" />
+
+        <small class="error" *ngIf="email.invalid && email.touched">
+          Enter a valid email
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input 
+          type="password"
+          name="password"
+          ngModel
+          required
+          minlength="8"
+          #password="ngModel"
+          placeholder="Enter your password" />
+
+        <small class="error" *ngIf="password.invalid && password.touched">
+          Password must be at least 8 characters
+        </small>
+      </div>
+
+      <button type="submit">Sign in</button>
+
+    </form>
+
+    <p class="footer">
+      Don’t have an account?
+      <span class="link" routerLink="/register">Create account</span>
+    </p>
+
+  </div>
+</div>

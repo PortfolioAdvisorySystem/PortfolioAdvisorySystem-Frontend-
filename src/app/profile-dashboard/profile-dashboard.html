@@ -1,0 +1,136 @@
+<div class="layout">
+
+    <app-sidebar></app-sidebar>
+
+    <div class="main">
+
+        <app-navbar></app-navbar>
+
+        <div class="content">
+
+            <div class="profile-header">
+                <div>
+                    <h1>My Profile</h1>
+                    <p>Manage your personal and investment information</p>
+                </div>
+            </div>
+
+            <div class="card profile-card">
+
+                <div class="profile-top">
+                    <div class="profile-avatar">👤</div>
+                    <div>
+                        <h2>John Doe</h2>
+                        <p>Member since June 2024</p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <!-- Personal Info -->
+                <div class="section">
+                    <h3>👤 Personal Information</h3>
+
+                    <div class="grid">
+                        <div class="info-box">
+                            <label>Name</label>
+                            <p>👤 John Doe</p>
+                        </div>
+
+                        <div class="info-box">
+                            <label>Email</label>
+                            <p>✉ john.doe@example.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investment -->
+                <div class="section">
+                    <h3>💲 Investment Information</h3>
+
+                    <div class="investment-box">
+                        <label>Total Investment Amount</label>
+                        <h2>$45,000</h2>
+                    </div>
+                </div>
+
+                <!-- Plan -->
+                <div class="section">
+
+                    <!-- Header -->
+                    <div class="plan-header">
+                        <h3> Investment Plan</h3>
+                        <button class="btn-secondary" (click)="enableEdit()" *ngIf="!isEditingPlan">
+                            CHANGE PLAN
+                        </button>
+                    </div>
+
+                    <!-- VIEW MODE -->
+                    <div class="plan-box" *ngIf="!isEditingPlan">
+                        <div>
+                            <label>Current Investment Plan</label>
+                            <h2 class="green">{{ currentPlan }}</h2>
+                            <p>
+                                {{
+                                currentPlan === 'Conservative' ? 'Low risk, stable returns' :
+                                currentPlan === 'Moderate' ? 'Balanced risk and returns' :
+                                'High risk, high returns'
+                                }}
+                            </p>
+                        </div>
+
+                        <div class="plan-icon">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none"
+                                viewBox="0 0 24 24">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- EDIT MODE -->
+                    <div class="plan-selection" *ngIf="isEditingPlan">
+
+                        <p class="plan-desc">
+                            Select your investment plan. You can switch to a different plan at any time.
+                        </p>
+
+                        <div class="plan-grid">
+
+                            <div class="plan-card" *ngFor="let plan of plans"
+                                [class.active]="selectedPlan === plan.name" (click)="selectPlan(plan.name)">
+                                <div class="icon" [ngClass]="plan.color">
+                                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                                        viewBox="0 0 24 24">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M4 4v15a1 1 0 0 0 1 1h15M8 16l2.5-5.5 3 3L17.273 7 20 9.667" />
+                                    </svg>
+
+                                </div>
+
+                                <h4>{{ plan.name }}</h4>
+                                <p>{{ plan.desc }}</p>
+
+                                <span *ngIf="selectedPlan === plan.name" class="current-label">
+                                    CURRENT PLAN
+                                </span>
+                            </div>
+
+                        </div>
+
+                        <button class="btn-primary done-btn" (click)="savePlan()">
+                            Done
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

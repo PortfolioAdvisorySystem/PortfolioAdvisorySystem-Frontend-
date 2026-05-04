@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="card">
+    
+    <h1>Create your account</h1>
+    <p class="subtitle">Enter your details below to get started</p>
+
+    <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+
+      <div class="row">
+        <div class="input-group">
+          <label>First name</label>
+          <input 
+            type="text" 
+            name="firstName"
+            ngModel
+            required
+            #firstName="ngModel"
+            placeholder="Jane" />
+
+          <small class="error" 
+            *ngIf="firstName.invalid && (firstName.dirty || isSubmitted)">
+            First name is required
+          </small>
+        </div>
+
+        <div class="input-group">
+          <label>Last name</label>
+          <input 
+            type="text" 
+            name="lastName"
+            ngModel
+            required
+            #lastName="ngModel"
+            placeholder="Doe" />
+
+          <small class="error" 
+            *ngIf="lastName.invalid && (lastName.dirty || isSubmitted)">
+            Last name is required
+          </small>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Email</label>
+        <input 
+          type="email" 
+          name="email"
+          ngModel
+          required
+          email
+          #email="ngModel"
+          placeholder="jane@example.com" />
+
+        <small class="error" 
+          *ngIf="email.invalid && (email.dirty || isSubmitted)">
+          Enter a valid email
+        </small>
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input 
+          type="password" 
+          name="password"
+          ngModel
+          required
+          minlength="8"
+          #password="ngModel"
+          placeholder="At least 8 characters" />
+
+        <small class="error" 
+          *ngIf="password.invalid && (password.dirty || isSubmitted)">
+          Password must be at least 8 characters
+        </small>
+      </div>
+
+      <button type="submit">Create account</button>
+
+    </form>
+
+    <p class="footer">
+      Already have an account?
+      <span class="link" routerLink="/login">Sign in</span>
+    </p>
+
+  </div>
+</div>

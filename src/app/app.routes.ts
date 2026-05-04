@@ -8,9 +8,12 @@ import { QuestionnaireComponent } from './questionnaire/questionnaire';
 import { Loading } from './loading/loading';
 import { ResultComponent } from './result/result';
 import { HomeComponent } from './home/home';
+import { ProfileDashboardComponent } from './profile-dashboard/profile-dashboard';
+import { LoginComponent } from './login/login';
 
 // Admin components
 import { AdminLayoutComponent } from './admin/layout/admin-layout/admin-layout';
+import { RegisterComponent } from './register/register';
 import { DashboardComponent as AdminDashboard } from './admin/pages/dashboard/dashboard';
 import { Rules} from './admin/pages/rules/rules';
 import { StocksComponent } from './admin/pages/stocks/stocks';
@@ -24,8 +27,11 @@ export const routes: Routes = [
 
   // ===== INVESTOR SIDE =====
   { path: '', component: LandingComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
   { path: 'portfolio', component: DashboardComponent },
+  { path: 'profile', component: ProfileDashboardComponent },
   { path: 'allocations', component: AllocationsComponent },
   { path: 'questions', component: QuestionnaireComponent },
   { path: 'loading', component: Loading },
