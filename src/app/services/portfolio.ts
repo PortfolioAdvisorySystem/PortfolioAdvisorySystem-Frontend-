@@ -15,11 +15,8 @@ export class PortfolioService {
   private baseUrl = 'http://localhost:8080/api/reports';
 
   constructor(private http: HttpClient) {}
-
-  // ── Get subscriberId from localStorage ───────────────────────────────────
   private getSubscriberId(): string | null {
-   // const id = localStorage.getItem('subscriberId');
-    const id="1";
+    const id=localStorage.getItem('userId');
     if (!id) console.error('[PortfolioService] No subscriberId in localStorage');
     return id;
   }
@@ -28,7 +25,6 @@ export class PortfolioService {
     const subscriberId = this.getSubscriberId();
 
     if (!subscriberId) {
-      // Return empty report if not logged in — prevents crash
       return of({
         subscriberId: 0,
         totalAUM:     0,
@@ -42,7 +38,6 @@ export class PortfolioService {
     );
   }
 
-  // ── Transform report → dashboard shape (used by dashboard component) ──────
   getPortfolioDashboard(): Observable<PortfolioDashboard> {
     return this.getAllocationBySubscriber().pipe(
       map(report => this.buildDashboardFromReport(report))
@@ -56,14 +51,12 @@ export class PortfolioService {
 
     positions.forEach(pos => {
       if (stockMap.has(pos.stock)) {
-        // Already seen this stock — accumulate weight + append strategy
         const existing       = stockMap.get(pos.stock)!;
         existing.totalWeight = parseFloat((existing.totalWeight + pos.weight).toFixed(2));
         if (!existing.strategies.includes(pos.strategy)) {
           existing.strategies += ', ' + pos.strategy;
         }
       } else {
-        // First occurrence — create new row
         stockMap.set(pos.stock, {
           symbol:                pos.stock,
           sector:                pos.sector,
@@ -81,7 +74,6 @@ export class PortfolioService {
       }
     });
 
-    // ── Calculate allocation % after all weights are summed ───────────────
     const totalAllocated = Array.from(stockMap.values())
       .reduce((sum, row) => sum + row.totalWeight, 0);
 
@@ -93,7 +85,6 @@ export class PortfolioService {
 
     const allocationRows = Array.from(stockMap.values());
 
-    // ── Sector breakdown for pie chart ────────────────────────────────────
     const sectorMap: Record<string, number> = {};
     positions.forEach(pos => {
       sectorMap[pos.sector] = (sectorMap[pos.sector] || 0) + pos.weight;
@@ -108,7 +99,6 @@ export class PortfolioService {
       }))
       .sort((a, b) => b.totalWeight - a.totalWeight);
 
-    // ── Strategy breakdown — Conservative vs Moderate split ───────────────
     const strategyMap: Record<string, number> = {};
     positions.forEach(pos => {
       strategyMap[pos.strategy] = (strategyMap[pos.strategy] || 0) + pos.weight;
@@ -134,5 +124,30 @@ export class PortfolioService {
       sectorBreakdown,
       strategyBreakdown
     };
+  }
+  getSubscriberProfile() {
+  const subscriberId = localStorage.getItem('userId');
+  return this.http.get(`http://localhost:8080/api/subscriber/${subscriberId}`);
+}
+updateSubscriberPlan(data: any) {
+  const subscriberId = localStorage.getItem('userId');
+  return this.http.patch(
+    `http://localhost:8080/api/subscriber/${subscriberId}/strategy-mix`,
+    data
+  );
+  
+}
+getStrategies()
+  {
+    return this.http.get<any[]>(`http://localhost:8080/api/subscriber/strategies`);  
+  }
+  getCurrentStrategy()
+  {
+    const subscriberId = localStorage.getItem('userId');
+    return this.http.get<any>(`http://localhost:8080/api/subscriber/current-strategy/${subscriberId}`);
+  }
+  createWithRiskProfile(data: any) {
+    const userId = localStorage.getItem('userId');
+    return this.http.post(`http://localhost:8080/api/subscriber/create-with-risk-profile/${userId}`, data);
   }
 }

@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-
+import { authGuard, adminGuard } from './guards/auth-guard';
 // Investor components
 import { DashboardComponent } from './dashboard/dashboard';
 import { AllocationsComponent } from './allocations/allocations';
@@ -30,10 +30,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'portfolio', component: DashboardComponent },
-  { path: 'profile', component: ProfileDashboardComponent },
-  { path: 'allocations', component: AllocationsComponent },
-  { path: 'questions', component: QuestionnaireComponent },
+  { path: 'portfolio', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'profile', component: ProfileDashboardComponent, canActivate: [authGuard] },
+  { path: 'allocations', component: AllocationsComponent, canActivate: [authGuard] },
+  { path: 'questions', component: QuestionnaireComponent, canActivate: [authGuard] },
   { path: 'loading', component: Loading },
   { path: 'result', component: ResultComponent },
 
@@ -42,14 +42,14 @@ export const routes: Routes = [
     path: 'admin',
     component: AdminLayoutComponent,
     children: [
-      { path: 'dashboard', component: AdminDashboard },
-      { path: 'rules', component: Rules },
-      { path: 'stocks', component: StocksComponent },
-      { path: 'workflow', component: WorkflowComponent },
-      { path: 'subscribers', component: SubscribersComponent },
-       { path: 'strategies', component: StrategiesComponent },
-       { path: 'reports', component: ReportsComponent },
-      { path: 'audit-logs', component: AuditLogs },
+      { path: 'dashboard', component: AdminDashboard, canActivate: [adminGuard] },
+      { path: 'rules', component: Rules, canActivate: [adminGuard] },
+      { path: 'stocks', component: StocksComponent, canActivate: [adminGuard] },
+      { path: 'workflow', component: WorkflowComponent, canActivate: [adminGuard] },
+      { path: 'subscribers', component: SubscribersComponent, canActivate: [adminGuard] },
+       { path: 'strategies', component: StrategiesComponent, canActivate: [adminGuard] },
+       { path: 'reports', component: ReportsComponent, canActivate: [adminGuard] },
+      { path: 'audit-logs', component: AuditLogs, canActivate: [adminGuard] },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     
     ]

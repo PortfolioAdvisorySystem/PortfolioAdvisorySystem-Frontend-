@@ -30,13 +30,11 @@ export class DashboardComponent {
 
       this.dashboard = data;
 
-      // 🔥 FIXED MAPPING
       this.strategies = (data.allocationByStrategy || []).map((s: any) => ({
         name: s.strategyName,
-        value: Number(s.percentage) // ✅ USE percentage
+        value: Number(s.percentage) 
       }));
 
-      // 🔥 SAFE MAX
       this.max = this.strategies.length
         ? Math.max(...this.strategies.map(s => s.value))
         : 1;

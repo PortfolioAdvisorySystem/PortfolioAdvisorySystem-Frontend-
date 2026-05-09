@@ -27,9 +27,9 @@ export function calculateRisk(answers: UserAnswers) {
     60 * 0.20 // dummy risk capacity
   );
 
-  let profile = 'Moderate';
-  if (finalScore > 66) profile = 'Aggressive';
-  else if (finalScore < 33) profile = 'Conservative';
+  let profile = 'MODERATE';
+  if (finalScore > 66) profile = 'AGGRESSIVE';
+  else if (finalScore < 33) profile = 'CONSERVATIVE';
 
   return {
     score: finalScore,

@@ -143,3 +143,23 @@
 
   color: black;
 }
+.logout {
+  margin-left: 12px;
+  padding: 6px 12px;
+
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.logout:hover {
+  background: #ef4444;
+  color: white;
+}

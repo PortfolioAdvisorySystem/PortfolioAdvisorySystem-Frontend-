@@ -73,7 +73,6 @@ export class Auth {
   }
  
   isAdmin():      boolean { return this.getRole() === 'ADMIN'; }
-  isAnalyst():    boolean { return this.getRole() === 'ANALYST'; }
   isSubscriber(): boolean { return this.getRole() === 'SUBSCRIBER'; }
 }
 

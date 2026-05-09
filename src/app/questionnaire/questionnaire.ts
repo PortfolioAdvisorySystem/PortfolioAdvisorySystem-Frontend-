@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from '../services/data';
 import { calculateRisk } from '../services/risk-engine';
-
+import { PortfolioService } from '../services/portfolio';
+import { _capitalize } from 'chart.js/helpers';
 @Component({
   selector: 'app-questionnaire',
   standalone: true,
@@ -22,7 +23,7 @@ export class QuestionnaireComponent {
   showError = false;
   hasAttemptedToProgress = false; 
 
-  constructor(private router: Router, private dataService: DataService) {
+  constructor(private router: Router, private portfolioService: PortfolioService, private dataService: DataService) {
     
     this.clearErrors();
   }
@@ -165,7 +166,7 @@ export class QuestionnaireComponent {
     if (['age', 'income'].includes(key) && answer <= 0) {
       this.setError(key, 'Please enter a valid amount greater than 0');
       return;
-    }
+     }
 
     if (key === 'liabilities' && answer < 0) {
       this.setError(key, 'Please enter a valid amount (0 or greater)');
@@ -194,14 +195,22 @@ export class QuestionnaireComponent {
       
 
       const result = calculateRisk(formattedAnswers);
-      console.log("result");
-      
-
       this.dataService.answers = formattedAnswers;
       this.dataService.result = result;
 
-    
-      this.router.navigate(['/loading']);
+      const payload = {
+  riskProfile: _capitalize(result.profile)   // CONSERVATIVE / MODERATE / AGGRESSIVE
+};
+
+this.portfolioService.createWithRiskProfile(payload).subscribe({
+  next: () => {
+    this.router.navigate(['/loading']);
+  },
+  error: (err) => {
+    console.error('Risk update failed', err);
+    this.router.navigate(['/loading']); // fallback
+  }
+});
 
       return;
     }

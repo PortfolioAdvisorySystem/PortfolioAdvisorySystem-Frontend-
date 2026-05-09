@@ -81,8 +81,15 @@ li:hover {
   background: #16263a;
 }
 
+
 .logout {
+  margin-top: auto;
   padding: 12px;
-  border-top: 1px solid #1f2a3a;
-  color: #c9d1d9;
+  color: #ef4444;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.logout:hover {
+  background: rgba(239, 68, 68, 0.1);
 }

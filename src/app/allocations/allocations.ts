@@ -32,7 +32,7 @@ export interface AllocationTableRow {
   styleUrls: ['./allocations.css']
 })
 export class AllocationsComponent implements OnInit {
-  subscriberId=1;
+  subscriberId=Number(localStorage.getItem("userId"));
   //Number(localStorage.getItem("subscriberId"))||
   showForm = false;
   inflowAmount: number = 0;

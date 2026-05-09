@@ -1,7 +1,5 @@
 <div class="navbar">
-
-    
-
+   
     <!-- CENTER SEARCH -->
     <div class="nav-center">
         <div class="search-box">
@@ -29,7 +27,12 @@
         <!-- USER -->
         <div class="user">
             <div class="avatar">👤</div>
-            <span>ops@admin</span>
+            <span>{{auth.getRole()}} {{auth.getUserId()}}</span>
+        </div>
+         
+        <!-- 🔴 LOGOUT -->
+        <div class="logout" (click)="logout()">
+            ⏻ Logout
         </div>
 
     </div>

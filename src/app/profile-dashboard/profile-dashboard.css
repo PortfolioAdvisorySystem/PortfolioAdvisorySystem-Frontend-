@@ -226,44 +226,56 @@
 
 /* Grid */
 .plan-grid {
-  display: flex;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 🔥 3 per row */
+  gap: 16px;
+  margin-top: 15px;
 }
-
-/* Cards */
 .plan-card {
-  flex: 1;
-  background: #1b2a3d;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #2a3a4f;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #1f2937;
+  background: #0f172a;
+
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.25s ease;
 }
 
 .plan-card:hover {
-  border-color: #1cc88a;
+  transform: translateY(-4px);
+  border-color: #22c55e;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Active card (IMPORTANT) */
 .plan-card.active {
-  border: 2px solid #1cc88a;
-  background: rgba(28, 200, 138, 0.1);
+  border: 2px solid #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+/* Icon colors */
+.icon.conservative {
+  background: #3b82f6;
 }
 
-/* Icon colors */
+.icon.moderate {
+  background: #22c55e;
+}
+
+.icon.aggressive {
+  background: #ef4444;
+}
+
 .icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  color: white;
   margin-bottom: 10px;
 }
-
-.blue { background: #2f6fed; }
-.red { background: #ff4d4f; }
 
 /* Label */
 .current-label {
@@ -277,4 +289,46 @@
 /* Done button */
 .done-btn {
   margin-top: 20px;
+}
+.plan-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.btn-primary {
+  background: #22c55e;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #1f2937;
+  color: #e5e7eb;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+/* Tablet */
+@media (max-width: 1024px) {
+  .plan-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .plan-grid {
+    grid-template-columns: 1fr;
+  }
 }

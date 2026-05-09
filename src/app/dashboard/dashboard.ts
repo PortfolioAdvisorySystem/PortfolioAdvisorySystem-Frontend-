@@ -16,9 +16,9 @@ Chart.register(...registerables);
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    CommonModule,       // needed for *ngIf, *ngFor, pipes
-    Sidebar,   // fixes: 'app-sidebar' is not a known element
-    NavbarComponent,    // fixes: 'app-navbar' is not a known element
+    CommonModule,       
+    Sidebar,   
+    NavbarComponent,    
   ],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
@@ -85,7 +85,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // ── Charts ─────────────────────────────────────────────────────────────────
+  
 
   private drawCharts(): void {
     this.drawLineChart();
@@ -102,7 +102,7 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     const data = labels.map((_, i) =>
       parseFloat((startVal + step * i + (Math.random() - 0.5) * step * 0.25).toFixed(2))
     );
-    data[data.length - 1] = endVal; // pin last point to real value
+    data[data.length - 1] = endVal; 
 
     this.lineChartInstance = new Chart(this.lineChartRef.nativeElement, {
       type: 'line',
@@ -175,7 +175,6 @@ export class DashboardComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  // ── Template helpers ───────────────────────────────────────────────────────
 
   getSectorColor(sector: string): string {
     return this.sectorColors[sector] ?? '#8b5cf6';

@@ -57,7 +57,7 @@ export class Rules {
 
     return matchesSearch && matchesStatus;
   });
-
+  this.cdr.detectChanges();
 }
 
   isModalOpen = false;

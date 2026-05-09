@@ -1,5 +1,5 @@
 import { Component , EventEmitter, Output } from '@angular/core';
-
+import { Auth } from '../../../services/auth';
 @Component({
   selector: 'app-navbar',
   imports: [],
@@ -12,4 +12,8 @@ export class Navbar {
   onToggle() {
     this.toggleSidebar.emit();
   }
+  constructor(public auth: Auth) {} 
+  logout() {
+  this.auth.logout();  
+}
 }
